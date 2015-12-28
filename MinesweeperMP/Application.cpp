@@ -1,28 +1,35 @@
 ﻿#include "Application.h"
+#include "Constants.h"
 
 namespace mMp {
+
 	Application::Application() {
-		renderWindow.create(VideoMode(800, 600), "MinesweeperMP");
+	}
+
+	void Application::init() {
+		renderWindow.create(VideoMode(ct::WindowWidth, ct::WindowHeight), "MinesweeperMP");
+		renderWindow.resetGLStates();
+
+		mainMenu = make_shared<MainMenu>([&]() { renderWindow.close(); });
+		mainMenu->loadUi(desktop);
 
 		tickClock.restart();
 	}
 
-	Application::~Application() {
-	}
-
-	void Application::Run() {
+	void Application::run() {
 		while (renderWindow.isOpen()) {
-			HandleEvents();
+			handleEvents();
 
-			Update();
-			Draw();
+			update();
+			draw();
 		}
 	}
 
-	void Application::HandleEvents() {
+	void Application::handleEvents() {
 		Event event;
 		while(renderWindow.pollEvent(event)) {
 			desktop.HandleEvent(event);
+			mainMenu->handleEvent(event);
 
 			if (event.type == Event::Closed) {
 				renderWindow.close();
@@ -30,15 +37,18 @@ namespace mMp {
 		}
 	}
 
-	void Application::Update() {
+	void Application::update() {
 		float tickSeconds = tickClock.restart().asSeconds();
 		desktop.Update(tickSeconds);
 
+		mainMenu->update(tickSeconds);
 	}
 
-	void Application::Draw() {
+	void Application::draw() {
 		renderWindow.clear();
 		sfGui.Display(renderWindow);
+
+		mainMenu->draw(renderWindow, RenderStates());
 		
 		renderWindow.display();
 	}

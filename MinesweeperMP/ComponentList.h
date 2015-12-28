@@ -5,7 +5,7 @@
 
 namespace mMp {
 	using namespace std;
-	class ComponentList : Component
+	class ComponentList : public Component
 	{
 	public:
 		vector<shared_ptr<Component>> components;

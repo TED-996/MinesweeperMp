@@ -1,14 +1,24 @@
 ﻿#pragma once
+#include <SFGUI/Widgets.hpp>
 #include "Component.h"
 #include "ComponentList.h"
 
+
 namespace mMp {
-	class Menu : Component
+	using namespace sfg;
+	class Menu : public Component
 	{
+	protected:
 		ComponentList componentList;
+		sfg::Window::Ptr window;
+
+		virtual void initWindow() = 0;
 	public:
-		void draw(RenderTarget& target, RenderStates states) override;
-		bool handleEvent(Event event) override;
-		void update(float seconds) override;
+		virtual void loadUi(Desktop& desktop);
+		virtual void unloadUi(Desktop& desktop);
+
+		virtual void draw(RenderTarget& target, RenderStates states) override;
+		virtual bool handleEvent(Event event) override;
+		virtual void update(float seconds) override;
 	};
 }

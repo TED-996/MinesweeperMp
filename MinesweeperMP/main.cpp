@@ -2,7 +2,8 @@
 
 int main() {
 	mMp::Application application;
-	application.Run();
+	application.init();
+	application.run();
 
 	return 0;
 }

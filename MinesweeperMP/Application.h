@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
+#include "Menu.h"
+#include "MainMenu.h"
 
 namespace mMp {
 	using namespace sf;
@@ -16,13 +18,15 @@ namespace mMp {
 
 		Clock tickClock;
 
-		void Update();
-		void Draw();
-		void HandleEvents();
+		shared_ptr<MainMenu> mainMenu;
+
+		void update();
+		void draw();
+		void handleEvents();
 	public:
 		Application();
-		~Application();
-
-		void Run();
+		
+		void init();
+		void run();
 	};
 }
