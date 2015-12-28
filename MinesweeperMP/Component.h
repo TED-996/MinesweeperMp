@@ -1,17 +1,25 @@
 ﻿#pragma once
 #include <SFML/Graphics.hpp>
-#include "Updateable.h"
-#include "EventHandler.h"
-#include "Drawable.h"
-
-using namespace sf;
 
 namespace mMp {
-	class Component : Updateable, Drawable, EventHandler
+	using namespace sf;
+	class Component
 	{
 	public:
-		virtual void draw(RenderTarget& target, RenderStates states) override = 0;
-		virtual bool handleEvent(Event event) override = 0;
-		virtual void update(float seconds) override = 0;
+		virtual ~Component() {
+		}
+
+		// Draw the component on the screen.
+		virtual void draw(RenderTarget& target, RenderStates states) {
+		}
+
+		// Handle a particular event. If the event has been completely handled and this should stop, return true.
+		virtual bool handleEvent(Event event) {
+			return false;
+		}
+
+		// Update the component.
+		virtual void update(float seconds) {
+		}
 	};
 }
