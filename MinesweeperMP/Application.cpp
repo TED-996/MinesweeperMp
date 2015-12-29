@@ -1,5 +1,4 @@
 ﻿#include "Application.h"
-#include "Constants.h"
 
 namespace mMp {
 
@@ -10,8 +9,7 @@ namespace mMp {
 		renderWindow.create(VideoMode(ct::WindowWidth, ct::WindowHeight), "MinesweeperMP");
 		renderWindow.resetGLStates();
 
-		mainMenu = make_shared<MainMenu>([&]() { renderWindow.close(); });
-		mainMenu->loadUi(desktop);
+		mainMenu = make_shared<MainMenu>(desktop, [&]() { renderWindow.close(); });
 
 		tickClock.restart();
 	}

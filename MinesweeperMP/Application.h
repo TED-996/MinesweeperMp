@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
-#include "Menu.h"
 #include "MainMenu.h"
 
 namespace mMp {

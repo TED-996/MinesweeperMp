@@ -1,20 +1,15 @@
 ﻿#pragma once
 #include <SFGUI/Widgets.hpp>
-#include "Menu.h"
+#include "MenuNode.h"
+#include "MainMenuUi.h"
 
 namespace mMp {
 	using namespace sfg;
-	class MainMenu : public Menu
+	class MainMenu : public MenuNode
 	{
-		function<void()> closeFunction;
-
-		void onPlayClick();
-		void onExitClick();
-
-	protected:
-		void initWindow() override;
+		void onPlayPressed();
 
 	public:
-		MainMenu(function<void()> newCloseFunction);
+		MainMenu(Desktop& sfgDesktop, Action closeAction);
 	};
 }

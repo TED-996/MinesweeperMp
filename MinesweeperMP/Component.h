@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 namespace mMp {
@@ -6,6 +7,8 @@ namespace mMp {
 	class Component
 	{
 	public:
+		typedef std::shared_ptr<Component> Ptr;
+
 		virtual ~Component() {
 		}
 

@@ -8,10 +8,10 @@ namespace mMp {
 	class ComponentList : public Component
 	{
 	public:
-		vector<shared_ptr<Component>> components;
+		vector<Component::Ptr> components;
 
-		void add(shared_ptr<Component> c);
-		bool remove(shared_ptr<Component> c);
+		void add(Component::Ptr c);
+		bool remove(Component::Ptr c);
 		void clear();
 
 		void draw(RenderTarget& target, RenderStates states) override;

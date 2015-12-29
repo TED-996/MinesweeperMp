@@ -122,15 +122,19 @@
     <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MainMenuUi.cpp" />
+    <ClCompile Include="MenuNode.cpp" />
+    <ClCompile Include="UiComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentList.h" />
-    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MainMenuUi.h" />
+    <ClInclude Include="MenuNode.h" />
+    <ClInclude Include="UiComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

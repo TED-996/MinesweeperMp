@@ -2,11 +2,11 @@
 
 namespace mMp
 {
-	void ComponentList::add(shared_ptr<Component> c) {
+	void ComponentList::add(Component::Ptr c) {
 		components.push_back(c);
 	}
 
-	bool ComponentList::remove(shared_ptr<Component> c) {
+	bool ComponentList::remove(Component::Ptr c) {
 		for (auto it = components.begin(); it != components.end(); ++it) {
 			if (*it == c) {
 				components.erase(it);
