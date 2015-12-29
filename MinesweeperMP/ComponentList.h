@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <vector>
 #include "Component.h"
-#include <memory>
 
 namespace mMp {
 	using namespace std;

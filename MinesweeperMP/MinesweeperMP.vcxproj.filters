@@ -51,6 +51,9 @@
     <ClCompile Include="GameMenuNode.cpp">
       <Filter>Source Files\MenuNodes</Filter>
     </ClCompile>
+    <ClCompile Include="GameUi.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="GameMenuNode.h">
       <Filter>Header Files\MenuNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUi.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
