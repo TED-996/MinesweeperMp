@@ -19,11 +19,11 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{cbaaa288-7f67-404f-8df1-8735cb105016}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Menus">
-      <UniqueIdentifier>{fbae044e-ee37-4104-bba4-e301836c0f18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Menus">
+    <Filter Include="Header Files\MenuNodes">
       <UniqueIdentifier>{c0716ef5-8f83-4ce4-b9e6-86312f7d3da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MenuNodes">
+      <UniqueIdentifier>{fbae044e-ee37-4104-bba4-e301836c0f18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,16 +37,19 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files\Menus</Filter>
+      <Filter>Source Files\MenuNodes</Filter>
     </ClCompile>
     <ClCompile Include="MenuNode.cpp">
-      <Filter>Source Files\Menus</Filter>
+      <Filter>Source Files\MenuNodes</Filter>
     </ClCompile>
     <ClCompile Include="UiComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuUi.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMenuNode.cpp">
+      <Filter>Source Files\MenuNodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -60,10 +63,10 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\Menus</Filter>
+      <Filter>Header Files\MenuNodes</Filter>
     </ClInclude>
     <ClInclude Include="MenuNode.h">
-      <Filter>Header Files\Menus</Filter>
+      <Filter>Header Files\MenuNodes</Filter>
     </ClInclude>
     <ClInclude Include="UiComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Defines.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenuNode.h">
+      <Filter>Header Files\MenuNodes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

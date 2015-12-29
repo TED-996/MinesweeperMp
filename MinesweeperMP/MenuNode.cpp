@@ -1,10 +1,6 @@
 ﻿#include "MenuNode.h"
 
 namespace mMp {
-	void MenuNode::changeComponent(Component::Ptr newComponent) {
-		rootComponent = newComponent;
-	}
-
 	void MenuNode::draw(RenderTarget& target, RenderStates states) {
 		rootComponent->draw(target, states);
 	}

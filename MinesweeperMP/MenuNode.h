@@ -16,7 +16,6 @@ namespace mMp {
 			: sfgDesktop(sfgDesktop) {
 		}
 
-		virtual void changeComponent(Component::Ptr newComponent);
 		virtual void draw(RenderTarget& target, RenderStates states) override;
 		virtual bool handleEvent(Event event) override;
 		virtual void update(float seconds) override;
