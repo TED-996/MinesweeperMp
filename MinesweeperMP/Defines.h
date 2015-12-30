@@ -11,4 +11,16 @@ namespace mMp {
 		const int WindowWidth = 800;
 		const int WindowHeight = 600;
 	}
+
+	enum Direction
+	{
+		Up,
+		UpRight,
+		Right,
+		DownRight,
+		Down,
+		DownLeft,
+		Left,
+		UpLeft
+	};
 }
