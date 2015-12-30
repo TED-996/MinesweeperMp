@@ -1,8 +1,8 @@
 ﻿#include "GameUi.h"
 
 namespace mMp {
-	GameUi::GameUi(Action closeAction, Desktop& desktop)
-		: UiComponent(desktop), closeAction(closeAction) {
+	GameUi::GameUi(Action1P<Command> postCommandAction, Action closeAction, Desktop& desktop)
+		: UiComponent(desktop), closeAction(closeAction), postCommandAction(postCommandAction) {
 	}
 
 	void GameUi::initWindow() {
@@ -17,5 +17,8 @@ namespace mMp {
 		box->Pack(button);
 
 		window->Add(box);
+	}
+
+	void GameUi::postUiEvent(UiEvent event) {
 	}
 }

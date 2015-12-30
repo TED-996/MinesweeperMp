@@ -27,8 +27,6 @@ namespace mMp {
 	}
 
 	void MenuNode::stashUi() {
-		uiComponent = dynamic_pointer_cast<UiComponent>(childComponent);
-
 		uiComponent->disable();
 	}
 

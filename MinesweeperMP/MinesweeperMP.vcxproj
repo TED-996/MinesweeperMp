@@ -119,7 +119,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="ComponentList.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameMenuNode.cpp" />
     <ClCompile Include="GameUi.cpp" />
     <ClCompile Include="main.cpp" />
@@ -127,18 +129,22 @@
     <ClCompile Include="MainMenuUi.cpp" />
     <ClCompile Include="MenuNode.cpp" />
     <ClCompile Include="UiComponent.cpp" />
+    <ClCompile Include="UiEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentList.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameMenuNode.h" />
     <ClInclude Include="GameUi.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuUi.h" />
     <ClInclude Include="MenuNode.h" />
     <ClInclude Include="UiComponent.h" />
+    <ClInclude Include="UiEvent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

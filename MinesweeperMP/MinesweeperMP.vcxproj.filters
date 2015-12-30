@@ -25,6 +25,18 @@
     <Filter Include="Source Files\MenuNodes">
       <UniqueIdentifier>{fbae044e-ee37-4104-bba4-e301836c0f18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UiInteraction">
+      <UniqueIdentifier>{4dca704e-4cd3-4dc2-b1c6-0020874cfb0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UiInteraction">
+      <UniqueIdentifier>{0ad66354-68ab-4dab-96c2-9b46654183a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{7c5e521e-adb0-4395-80b0-22b289dcae44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{9d44c939-7f57-4e4e-b4bb-0f3c4472a955}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,6 +65,15 @@
     </ClCompile>
     <ClCompile Include="GameUi.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Source Files\UiInteraction</Filter>
+    </ClCompile>
+    <ClCompile Include="UiEvent.cpp">
+      <Filter>Source Files\UiInteraction</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="GameUi.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Header Files\UiInteraction</Filter>
+    </ClInclude>
+    <ClInclude Include="UiEvent.h">
+      <Filter>Header Files\UiInteraction</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
