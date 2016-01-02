@@ -2,12 +2,16 @@
 
 namespace mMp
 {
-	Command::TileOpenCommand::TileOpenCommand(int line, int column)
-		: line(line), column(column) {
+	Command::TileOpenCommand::TileOpenCommand(int line, int column, int player)
+		: line(line), column(column), player(player) {
 	}
 
-	Command::TileFlagCommand::TileFlagCommand(int line, int column)
-		: line(line), column(column) {
+	Command::TileFlagCommand::TileFlagCommand(int line, int column, int player)
+		: line(line), column(column), player(player) {
+	}
+
+	Command::TurnEndCommand::TurnEndCommand(int player)
+		: player(player) {
 	}
 
 	Command::Command(TileOpenCommand command) {

@@ -6,8 +6,8 @@ namespace mMp
 		: line(line), column(column), neighbors(neighbors) {
 	}
 
-	UiEvent::TileFlagEvent::TileFlagEvent(int line, int column, bool flagged)
-		: line(line), column(column), flagged(flagged) {
+	UiEvent::TileFlagEvent::TileFlagEvent(int line, int column, bool flagged, int player)
+		: line(line), column(column), flagged(flagged), player(player) {
 	}
 
 	UiEvent::MineExplodeEvent::MineExplodeEvent(int line, int column)

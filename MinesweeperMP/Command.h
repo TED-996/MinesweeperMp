@@ -8,15 +8,23 @@ namespace mMp {
 		{
 			int line;
 			int column;
+			int player;
 
-			TileOpenCommand(int line, int column);
+			TileOpenCommand(int line, int column, int player = 0);
 		};
 		struct TileFlagCommand
 		{
 			int line;
 			int column;
+			int player;
 
-			TileFlagCommand(int line, int column);
+			TileFlagCommand(int line, int column, int player = 0);
+		};
+		struct TurnEndCommand
+		{
+			int player;
+
+			explicit TurnEndCommand(int player);
 		};
 
 		enum class CommandType

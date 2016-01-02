@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include "MenuNode.h"
-#include "GameManager.h"
+#include "SpGameManager.h"
 
 namespace mMp {
 	class GameMenuNode : public MenuNode
 	{
-		GameManager gameManager;
+		shared_ptr<IGameManager> gameManager;
 	public:
 		GameMenuNode(int boardSize, int mineCount, Action closeAction, Desktop& desktop);
 

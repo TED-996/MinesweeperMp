@@ -2,18 +2,18 @@
 #include "Command.h"
 #include "Defines.h"
 #include "UiEvent.h"
-#include "Component.h"
 #include "Board.h"
+#include "IGameManager.h"
 
 namespace mMp {
-	class GameManager : public Component
+	class SpGameManager : public IGameManager
 	{
 		Action1P<UiEvent> postUiEventAction;
 		Board board;
 	public:
-		explicit GameManager(int boardSize, int mineCount, Action1P<UiEvent> postUiEventAction);
+		explicit SpGameManager(int boardSize, int mineCount, Action1P<UiEvent> postUiEventAction);
 
-		void postCommand(Command command);
+		void postCommand(Command command) override;
 
 	private:
 		void handleReveal(Board::BoardPoint rootPoint);

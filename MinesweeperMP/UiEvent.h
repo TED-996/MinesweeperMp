@@ -17,8 +17,9 @@ namespace mMp {
 			int line;
 			int column;
 			bool flagged;
+			int player;
 
-			TileFlagEvent(int line, int column, bool flagged);
+			TileFlagEvent(int line, int column, bool flagged, int player = 0);
 		};
 		struct MineExplodeEvent
 		{
@@ -32,6 +33,10 @@ namespace mMp {
 			bool won;
 
 			explicit GameOverEvent(bool won);
+		};
+		struct TurnStartEvent
+		{
+			int player;
 		};
 
 		enum class UiEventType

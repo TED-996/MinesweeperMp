@@ -1,12 +1,12 @@
-﻿#include "GameManager.h"
+﻿#include "SpGameManager.h"
 
 namespace mMp
 {
-	GameManager::GameManager(int boardSize, int mineCount, Action1P<UiEvent> postUiEventAction)
+	SpGameManager::SpGameManager(int boardSize, int mineCount, Action1P<UiEvent> postUiEventAction)
 		: postUiEventAction(postUiEventAction), board(boardSize, mineCount) {
 	}
 
-	void GameManager::postCommand(Command command) {
+	void SpGameManager::postCommand(Command command) {
 		if (command.commandType == Command::CommandType::TileOpen) {
 			Board::BoardPoint point(command.tileOpenCommand.line, command.tileOpenCommand.column);
 			if (board.isMine(point)) {
@@ -26,7 +26,7 @@ namespace mMp
 		}
 	}
 
-	void GameManager::handleReveal(Board::BoardPoint rootPoint) {
+	void SpGameManager::handleReveal(Board::BoardPoint rootPoint) {
 		vector<Board::BoardPoint> revealedPoints = board.reveal(rootPoint);
 		for (auto point : revealedPoints) {
 			postUiEventAction(
