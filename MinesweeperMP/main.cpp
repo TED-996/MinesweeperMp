@@ -1,14 +1,13 @@
 #include "Application.h"
 #include <cstdlib>
-#include "Board.h"
+#include <ctime>
 
 int main() {
-	srand(time(nullptr));
+	srand((unsigned int) time(nullptr));
 
 	mMp::Application application;
 	application.init();
 	application.run();
-
 
 	return 0;
 }

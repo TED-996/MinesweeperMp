@@ -78,7 +78,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>E:\Development\Tools\sfml\SFML-2.3.2\lib;E:\Development\Tools\sfml\SFGUI-0.3.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-network-d.lib;sfml-audio-d.lib;sfml-main-d.lib;sfgui.lib;sfgui-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-network-d.lib;sfml-audio-d.lib;sfml-main-d.lib;sfgui-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -147,6 +147,15 @@
     <ClInclude Include="MenuNode.h" />
     <ClInclude Include="UiComponent.h" />
     <ClInclude Include="UiEvent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="theme.sft">
+      <FileType>Text</FileType>
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+	  <Content Include="theme.sft">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

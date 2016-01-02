@@ -7,8 +7,15 @@ using namespace std;
 void print(mMp::Board board);
 
 int main() {
-	srand(time(nullptr));
-	mMp::Board board(75, (int) (75 * 75 * 0.25));
+	srand((unsigned int) time(nullptr));
+	int size = 25;
+	mMp::Board board(size, (int) (size * size * 0.24));
+
+	board.reveal(mMp::Board::BoardPoint(0, 0));
+	board.reveal(mMp::Board::BoardPoint(0, size - 1));
+	board.reveal(mMp::Board::BoardPoint(size - 1, 0));
+	board.reveal(mMp::Board::BoardPoint(size - 1, size - 1));
+
 	print(board);
 	return 0;
 }
@@ -22,9 +29,13 @@ void print(mMp::Board board) {
 	for (int l = 0; l < board.size; l++) {
 		cout << '|';
 		for (int c = 0; c < board.size; c++) {
-			if (board.isMine(mMp::Board::BoardPoint(l, c))) {
+			mMp::Board::BoardPoint point(l, c);
+			if (board.isMine(point)) {
 				cout << '+';
 				counter++;
+			}
+			else if (board.isRevealed(point)) {
+				cout << board.getNeighbors(point);
 			}
 			else {
 				cout << ' ';

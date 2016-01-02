@@ -12,6 +12,14 @@ namespace mMp {
 
 			TileRevealEvent(int line, int column, int neighbors);
 		};
+		struct TileFlagEvent
+		{
+			int line;
+			int column;
+			bool flagged;
+
+			TileFlagEvent(int line, int column, bool flagged);
+		};
 		struct MineExplodeEvent
 		{
 			int line;
@@ -26,9 +34,10 @@ namespace mMp {
 			explicit GameOverEvent(bool won);
 		};
 
-		enum UiEventType
+		enum class UiEventType
 		{
 			TileReveal,
+			TileFlag,
 			MineExplode,
 			GameOver
 		};
@@ -38,8 +47,14 @@ namespace mMp {
 		union
 		{
 			TileRevealEvent tileRevealEvent;
+			TileFlagEvent tileFlagEvent;
 			MineExplodeEvent mineExplodeEvent;
 			GameOverEvent gameOverEvent;
 		};
+
+		explicit UiEvent(TileRevealEvent event);
+		explicit UiEvent(TileFlagEvent event);
+		explicit UiEvent(MineExplodeEvent event);
+		explicit UiEvent(GameOverEvent event);
 	};
 }

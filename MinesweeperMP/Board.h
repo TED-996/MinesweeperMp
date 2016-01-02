@@ -24,15 +24,24 @@ namespace mMp {
 	private:
 		bool mines[maxSize][maxSize];
 		bool revealed[maxSize][maxSize];
+		bool flagged[maxSize][maxSize];
+
+		int revealCount;
 
 	public:
 		Board(int size, int mineCount);
 
 		bool isMine(BoardPoint point);
+		bool isRevealed(BoardPoint point);
+		bool isFlagged(BoardPoint point);
 		int getNeighbors(BoardPoint point);
 
-		//vector<BoardPoint> reveal(BoardPoint root);
+		bool isCompleted();
+
+		vector<BoardPoint> reveal(BoardPoint root);
+		void toggleFlag(BoardPoint point);
 	private:
+		bool isValid(BoardPoint point);
 		void generate();
 	};
 }

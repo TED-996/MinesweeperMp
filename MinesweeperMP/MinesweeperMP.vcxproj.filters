@@ -76,7 +76,7 @@
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
-      <Filter>Header Files\Game</Filter>
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,5 +122,8 @@
     <ClInclude Include="Board.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="theme.sft" />
   </ItemGroup>
 </Project>

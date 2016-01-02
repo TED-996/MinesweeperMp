@@ -10,11 +10,10 @@ namespace mMp {
 		typedef std::shared_ptr<UiComponent> Ptr;
 	
 	private:
-		Desktop& desktop;
-
 		bool initialized;
 		bool disabled;
 	protected:
+		Desktop& desktop;
 		sfg::Window::Ptr window;
 
 	public:

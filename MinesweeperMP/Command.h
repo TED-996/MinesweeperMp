@@ -19,17 +19,21 @@ namespace mMp {
 			TileFlagCommand(int line, int column);
 		};
 
-		enum CommandType
+		enum class CommandType
 		{
 			TileOpen,
 			TileFlag
 		};
 
-		CommandType type;
+		CommandType commandType;
+
 		union
 		{
 			TileOpenCommand tileOpenCommand;
 			TileFlagCommand tileFlagCommand;
 		};
+
+		explicit Command(TileOpenCommand command);
+		explicit Command(TileFlagCommand command);
 	};
 }

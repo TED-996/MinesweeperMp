@@ -12,7 +12,7 @@ namespace mMp {
 		const int WindowHeight = 600;
 	}
 
-	enum Direction
+	enum class Direction
 	{
 		Up,
 		UpRight,

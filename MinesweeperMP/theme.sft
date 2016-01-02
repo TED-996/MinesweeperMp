@@ -1,0 +1,13 @@
+Button.Tile {
+	BackgroundColor: #555752FF;
+	Color: #C6CBC4FF;
+}
+
+Button.Flagged {
+	BackgroundColor: #FF2619FF;
+}
+
+Button.Revealed {
+	BackgroundColor: #AAAAAAFF;
+	Color: #333333FF;
+}

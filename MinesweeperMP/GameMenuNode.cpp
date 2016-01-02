@@ -3,9 +3,10 @@
 
 
 namespace mMp {
-	GameMenuNode::GameMenuNode(Desktop& desktop, Action closeAction)
-		: MenuNode(desktop, make_shared<GameUi>(getPostCommandFunction(), closeAction, desktop)),
-		gameManager(getPostUiEventFunction()) {
+	GameMenuNode::GameMenuNode(int boardSize, int mineCount, Action closeAction, Desktop& desktop)
+		: MenuNode(desktop,
+			make_shared<GameUi>(boardSize, mineCount, getPostCommandFunction(), closeAction, desktop)),
+		gameManager(boardSize, mineCount, getPostUiEventFunction()) {
 	}
 
 	void GameMenuNode::postUiCommand(Command command) {

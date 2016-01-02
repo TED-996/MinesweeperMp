@@ -1,8 +1,10 @@
 ﻿#include "Application.h"
 
 namespace mMp {
-
 	Application::Application() {
+		if (!desktop.LoadThemeFromFile("theme.sft")) {
+			cout << "theme not loaded!";
+		}
 	}
 
 	void Application::init() {

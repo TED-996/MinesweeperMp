@@ -10,7 +10,7 @@ namespace mMp {
 	int dvL[8] = { -1, -1, 0, 1, 1, 1, 0, -1 };
 	int dvC[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
 	Board::BoardPoint Board::BoardPoint::getNeighbor(Direction direction) {
-		return BoardPoint(line + dvL[direction], column + dvC[direction]);
+		return BoardPoint(line + dvL[(int) direction], column + dvC[(int) direction]);
 	}
 
 	Board::Board(int size, int mineCount)
@@ -18,11 +18,20 @@ namespace mMp {
 		generate();
 	}
 
+	bool Board::isValid(BoardPoint point) {
+		return (point.line >= 0 && point.line < size && point.column >= 0 && point.column < size);
+	}
+
 	bool Board::isMine(BoardPoint point) {
-		if (point.line < 0 || point.line >= maxSize || point.column < 0 || point.column >= maxSize) {
-			return false;
-		}
-		return mines[point.line][point.column];
+		return isValid(point) && mines[point.line][point.column];
+	}
+
+	bool Board::isRevealed(BoardPoint point) {
+		return isValid(point) && revealed[point.line][point.column];
+	}
+
+	bool Board::isFlagged(BoardPoint point) {
+		return isValid(point) && flagged[point.line][point.column];
 	}
 
 	int Board::getNeighbors(BoardPoint point) {
@@ -33,6 +42,10 @@ namespace mMp {
 			}
 		}
 		return count;
+	}
+
+	bool Board::isCompleted() {
+		return size * size - revealCount == mineCount;
 	}
 
 	void Board::generate() {
@@ -67,12 +80,47 @@ namespace mMp {
 				probCounter++;
 			}
 		}
-		//Set the mines. Also, initialize the "revealed" matrix to 0.
+		//Set the mines. Also, initialize the "revealed" and "flagged" matrices to 0.
 		for (int l = 0; l < size; l++) {
 			for (int c = 0; c < size; c++) {
 				mines[l][c] = (mineProb[l][c] > maxSafe);
 				revealed[l][c] = false;
+				flagged[l][c] = false;
 			}
 		}
+	}
+
+	vector<Board::BoardPoint> Board::reveal(BoardPoint root) {
+		vector<BoardPoint> points;
+		int qS = 0;
+		
+		if (!isMine(root) && !isRevealed(root)) {
+			points.push_back(root);
+		}
+
+		//stop complaining..
+		while (qS < (int) points.size()) {
+			BoardPoint item = points[qS++];
+			if (!revealed[item.line][item.column]) {
+				revealed[item.line][item.column] = true;
+				revealCount++;
+			}
+			
+
+			if (getNeighbors(item) == 0) {
+				for (int i = 0; i < 8; i++) {
+					BoardPoint neighbor = item.getNeighbor((Direction)i);
+					if (isValid(neighbor) && !isRevealed(neighbor)) {
+						points.push_back(neighbor);
+					}
+				}
+			}
+		}
+
+		return points;
+	}
+
+	void Board::toggleFlag(BoardPoint point) {
+		flagged[point.line][point.column] = !flagged[point.line][point.column];
 	}
 }
