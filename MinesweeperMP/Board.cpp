@@ -105,7 +105,6 @@ namespace mMp {
 				revealed[item.line][item.column] = true;
 				revealCount++;
 			}
-			
 
 			if (getNeighbors(item) == 0) {
 				for (int i = 0; i < 8; i++) {

@@ -34,6 +34,7 @@ namespace mMp {
 		bool isMine(BoardPoint point);
 		bool isRevealed(BoardPoint point);
 		bool isFlagged(BoardPoint point);
+		bool isValid(BoardPoint point);
 		int getNeighbors(BoardPoint point);
 
 		bool isCompleted();
@@ -41,7 +42,6 @@ namespace mMp {
 		vector<BoardPoint> reveal(BoardPoint root);
 		void toggleFlag(BoardPoint point);
 	private:
-		bool isValid(BoardPoint point);
 		void generate();
 	};
 }

@@ -3,10 +3,10 @@
 #include "SpGameManager.h"
 
 namespace mMp {
-	GameMenuNode::GameMenuNode(int boardSize, int mineCount, Action closeAction, Desktop& desktop)
+	GameMenuNode::GameMenuNode(GameSettings gameSettings, Action closeAction, Desktop& desktop)
 		: MenuNode(desktop,
-			make_shared<GameUi>(boardSize, mineCount, getPostCommandFunction(), closeAction, desktop)){
-		gameManager = make_shared<SpGameManager>(boardSize, mineCount, getPostUiEventFunction());
+			make_shared<GameUi>(gameSettings, getPostCommandFunction(), closeAction, desktop)){
+		gameManager = make_shared<SpGameManager>(gameSettings, getPostUiEventFunction());
 	}
 
 	void GameMenuNode::postUiCommand(Command command) {

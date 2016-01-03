@@ -2,19 +2,13 @@
 
 namespace mMp
 {
-	SpGameManager::SpGameManager(int boardSize, int mineCount, Action1P<UiEvent> postUiEventAction)
-		: postUiEventAction(postUiEventAction), board(boardSize, mineCount) {
+	SpGameManager::SpGameManager(GameSettings gameSettings, Action1P<UiEvent> postUiEventAction)
+		: postUiEventAction(postUiEventAction), board(gameSettings.boardSize, gameSettings.mineCount) {
 	}
 
 	void SpGameManager::postCommand(Command command) {
 		if (command.commandType == Command::CommandType::TileOpen) {
-			Board::BoardPoint point(command.tileOpenCommand.line, command.tileOpenCommand.column);
-			if (board.isMine(point)) {
-				postUiEventAction(UiEvent(UiEvent::GameOverEvent(false)));
-			}
-			else {
-				handleReveal(point);
-			}
+			handleReveal(Board::BoardPoint(command.tileOpenCommand.line, command.tileOpenCommand.column));
 		}
 		if (command.commandType == Command::CommandType::TileFlag) {
 			Board::BoardPoint point(command.tileFlagCommand.line, command.tileFlagCommand.column);
@@ -27,13 +21,47 @@ namespace mMp
 	}
 
 	void SpGameManager::handleReveal(Board::BoardPoint rootPoint) {
+		if (board.isFlagged(rootPoint)) {
+			return;
+		}
+		if (board.isMine(rootPoint)) {
+			postUiEventAction(UiEvent(UiEvent::GameOverEvent(false)));
+			return;
+		}
+		if (board.isRevealed(rootPoint)) {
+			handleRevealAround(rootPoint);
+			return;
+		}
 		vector<Board::BoardPoint> revealedPoints = board.reveal(rootPoint);
 		for (auto point : revealedPoints) {
+			if (board.isFlagged(point)) {
+				board.toggleFlag(point);
+				postUiEventAction(UiEvent(UiEvent::TileFlagEvent(point.line, point.column, false)));
+			}
 			postUiEventAction(
 				UiEvent(UiEvent::TileRevealEvent(point.line, point.column, board.getNeighbors(point))));
 		}
 		if (board.isCompleted()) {
 			postUiEventAction(UiEvent(UiEvent::GameOverEvent(true)));
+		}
+	}
+
+	void SpGameManager::handleRevealAround(Board::BoardPoint rootPoint) {
+		int flagCount = 0;
+		for (int i = 0; i < 8; i++) {
+			auto neighbor = rootPoint.getNeighbor((Direction)i);
+			if (board.isFlagged(neighbor)) {
+				flagCount++;
+			}
+		}
+		if (flagCount != board.getNeighbors(rootPoint)) {
+			return;
+		}
+		for (int i = 0; i < 8; i++) {
+			auto neighbor = rootPoint.getNeighbor((Direction)i);
+			if (board.isValid(neighbor) && !board.isRevealed(neighbor) && !board.isFlagged(neighbor)) {
+				handleReveal(neighbor);
+			}
 		}
 	}
 }

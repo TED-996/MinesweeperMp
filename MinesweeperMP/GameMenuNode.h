@@ -7,7 +7,7 @@ namespace mMp {
 	{
 		shared_ptr<IGameManager> gameManager;
 	public:
-		GameMenuNode(int boardSize, int mineCount, Action closeAction, Desktop& desktop);
+		GameMenuNode(GameSettings gameSettings, Action closeAction, Desktop& desktop);
 
 	private:
 		void postUiCommand(Command command);

@@ -3,6 +3,7 @@
 #include "Defines.h"
 #include "UiEvent.h"
 #include "Board.h"
+#include "GameSettings.h"
 #include "IGameManager.h"
 
 namespace mMp {
@@ -11,11 +12,12 @@ namespace mMp {
 		Action1P<UiEvent> postUiEventAction;
 		Board board;
 	public:
-		explicit SpGameManager(int boardSize, int mineCount, Action1P<UiEvent> postUiEventAction);
+		SpGameManager(GameSettings gameSettings, Action1P<UiEvent> postUiEventAction);
 
 		void postCommand(Command command) override;
 
 	private:
 		void handleReveal(Board::BoardPoint rootPoint);
+		void handleRevealAround(Board::BoardPoint rootPoint);
 	};
 }

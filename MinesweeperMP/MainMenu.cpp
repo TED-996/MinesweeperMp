@@ -10,6 +10,6 @@ namespace mMp
 	}
 
 	void MainMenu::onPlayPressed() {
-		setChild(make_shared<GameMenuNode>(20, 100, getRemoveChildAction(), sfgDesktop));
+		setChild(make_shared<GameMenuNode>(GameSettings(20, 100), getRemoveChildAction(), sfgDesktop));
 	}
 }

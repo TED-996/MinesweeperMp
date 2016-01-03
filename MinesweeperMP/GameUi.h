@@ -4,20 +4,20 @@
 #include "UiEvent.h"
 #include "Command.h"
 #include "Board.h"
+#include "GameSettings.h"
 
 namespace mMp {
 	using namespace std;
 	class GameUi : public UiComponent
 	{
-		int boardSize;
-		int mineCount;
+		GameSettings gameSettings;
 		Button::Ptr tileButtons[Board::maxSize][Board::maxSize];
 
 		Action closeAction;
 		Action1P<Command> postCommandAction;
 
 	public:
-		GameUi(int boardSize, int mineCount, Action1P<Command> postCommandAction, Action closeAction,
+		GameUi(GameSettings gameSettings, Action1P<Command> postCommandAction, Action closeAction,
 			Desktop& desktop);
 
 		void postUiEvent(UiEvent event);

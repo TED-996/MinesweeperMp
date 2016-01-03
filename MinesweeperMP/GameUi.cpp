@@ -2,9 +2,9 @@
 #include <iostream>
 
 namespace mMp {
-	GameUi::GameUi(int boardSize, int mineCount, Action1P<Command> postCommandAction, Action closeAction,
+	GameUi::GameUi(GameSettings gameSettings, Action1P<Command> postCommandAction, Action closeAction,
 		Desktop& desktop)
-		: UiComponent(desktop), boardSize(boardSize), mineCount(mineCount), closeAction(closeAction),
+		: UiComponent(desktop), gameSettings(gameSettings), closeAction(closeAction),
 		postCommandAction(postCommandAction) {
 	}
 
@@ -19,9 +19,9 @@ namespace mMp {
 		introBox->Pack(backButton);
 
 		auto table = Table::Create();
-		int buttonSize = (int) (ct::WindowHeight * 0.8 / boardSize);
-		for (int l = 0; l < boardSize; l++) {
-			for (int c = 0; c < boardSize; c++) {
+		int buttonSize = (int) (ct::WindowHeight * 0.8 / gameSettings.boardSize);
+		for (int l = 0; l < gameSettings.boardSize; l++) {
+			for (int c = 0; c < gameSettings.boardSize; c++) {
 				auto tileButton = getNewButton(l, c, buttonSize);
 
 				tileButtons[l][c] = tileButton;
@@ -31,15 +31,15 @@ namespace mMp {
 		
 		auto fixedContainer = Fixed::Create();
 		fixedContainer->Put(introBox, Vector2f(10, 10));
-		fixedContainer->Put(table, Vector2f((ct::WindowWidth - boardSize * buttonSize) / 2,
-			(ct::WindowHeight - boardSize * buttonSize) / 2));
+		fixedContainer->Put(table, Vector2f((float)((ct::WindowWidth - gameSettings.boardSize * buttonSize) / 2),
+			(float)((ct::WindowHeight - gameSettings.boardSize * buttonSize) / 2)));
 
 		window->Add(fixedContainer);
 	}
 
 	Button::Ptr GameUi::getNewButton(int line, int column, int size) {
 		auto button = Button::Create();
-		button->SetRequisition(Vector2f(size, size));
+		button->SetRequisition(Vector2f((float) size, (float) size));
 		button->SetClass("Tile");
 
 		button->GetSignal(Widget::OnLeftClick).Connect(bind(&GameUi::onButtonReveal, this, line, column));
@@ -69,7 +69,6 @@ namespace mMp {
 			closeAction();
 		}
 	}
-
 
 	void GameUi::handleTileReveal(int line, int column, int neighbors) {
 		auto button = tileButtons[line][column];
