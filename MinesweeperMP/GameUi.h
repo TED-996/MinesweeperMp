@@ -5,6 +5,7 @@
 #include "Command.h"
 #include "Board.h"
 #include "GameSettings.h"
+#include "Scoreboard.h"
 
 namespace mMp {
 	using namespace std;
@@ -12,6 +13,10 @@ namespace mMp {
 	{
 		GameSettings gameSettings;
 		Button::Ptr tileButtons[Board::maxSize][Board::maxSize];
+		Scoreboard scoreboard;
+
+		Clock clock;
+		Label::Ptr clockLabel;
 
 		Action closeAction;
 		Action1P<Command> postCommandAction;
@@ -21,6 +26,8 @@ namespace mMp {
 			Desktop& desktop);
 
 		void postUiEvent(UiEvent event);
+
+		void update(float seconds) override;
 	protected:
 		void initWindow() override;
 	private:

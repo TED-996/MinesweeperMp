@@ -1,11 +1,12 @@
 ﻿#include "GameUi.h"
+#include <string>
 #include <iostream>
 
 namespace mMp {
 	GameUi::GameUi(GameSettings gameSettings, Action1P<Command> postCommandAction, Action closeAction,
 		Desktop& desktop)
-		: UiComponent(desktop), gameSettings(gameSettings), closeAction(closeAction),
-		postCommandAction(postCommandAction) {
+		: UiComponent(desktop), gameSettings(gameSettings), scoreboard(gameSettings.names),
+		closeAction(closeAction), postCommandAction(postCommandAction) {
 	}
 
 	void GameUi::initWindow() {
@@ -31,8 +32,18 @@ namespace mMp {
 		
 		auto fixedContainer = Fixed::Create();
 		fixedContainer->Put(introBox, Vector2f(10, 10));
-		fixedContainer->Put(table, Vector2f((float)((ct::WindowWidth - gameSettings.boardSize * buttonSize) / 2),
-			(float)((ct::WindowHeight - gameSettings.boardSize * buttonSize) / 2)));
+
+		auto gameBox = Box::Create(Box::Orientation::HORIZONTAL, 0);
+		gameBox->Pack(table, false, false);
+		if (gameSettings.isMp) {
+			gameBox->Pack(scoreboard.getBox());
+		}
+
+		fixedContainer->Put(gameBox,
+			(Vector2f(ct::WindowWidth, ct::WindowHeight) - gameBox->GetRequisition()) / 2.0f);
+
+		clockLabel = Label::Create("00:00");
+		fixedContainer->Put(clockLabel, Vector2f(ct::WindowWidth - clockLabel->GetRequisition().x - 20, 10));
 
 		window->Add(fixedContainer);
 	}
@@ -55,6 +66,23 @@ namespace mMp {
 	void GameUi::onButtonFlag(int line, int column) {
 		postCommandAction(Command(Command::TileFlagCommand(line, column)));
 	}
+
+	string timeToString(Time time);
+
+	void GameUi::update(float seconds) {
+		auto time = clock.getElapsedTime();
+		clockLabel->SetText(timeToString(time));
+	}
+
+	string timeToString(Time time) {
+		ostringstream str;
+		int seconds = (int)(time.asSeconds());
+		str << setfill('0');
+		str << setw(2) << seconds / 60 << setw(1) << ':' << setw(2) << seconds % 60;
+
+		return str.str();
+	}
+
 
 	void GameUi::postUiEvent(UiEvent event) {
 		cout << "event got to the ui! type: " << (int) event.eventType << '\n';
