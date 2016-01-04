@@ -74,11 +74,11 @@ namespace mMp {
 	}
 
 	void GameUi::onButtonReveal(int line, int column) {
-		postCommandAction(Command(Command::TileOpenCommand(line, column)));
+		postCommandAction(Command(Command::TileOpenCommand(line, column, currentPlayer)));
 	}
 
 	void GameUi::onButtonFlag(int line, int column) {
-		postCommandAction(Command(Command::TileFlagCommand(line, column)));
+		postCommandAction(Command(Command::TileFlagCommand(line, column, currentPlayer)));
 	}
 
 	string timeToString(Time time);

@@ -99,7 +99,8 @@ namespace mMp
 		}
 		else {
 			board.toggleFlag(point);
-			postUiEventAction(UiEvent(UiEvent::TileFlagEvent(point.line, point.column, board.isFlagged(point))));
+			postUiEventAction(
+				UiEvent(UiEvent::TileFlagEvent(point.line, point.column, board.isFlagged(point), currentPlayer)));
 		}
 	}
 
