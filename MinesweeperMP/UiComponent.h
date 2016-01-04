@@ -17,7 +17,7 @@ namespace mMp {
 		sfg::Window::Ptr window;
 
 	public:
-		UiComponent(Desktop& desktop);
+		explicit UiComponent(Desktop& desktop);
 		~UiComponent();
 
 		void init();

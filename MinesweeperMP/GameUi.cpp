@@ -1,5 +1,4 @@
 ﻿#include "GameUi.h"
-#include <string>
 #include <iostream>
 
 namespace mMp {
@@ -7,6 +6,7 @@ namespace mMp {
 		Desktop& desktop)
 		: UiComponent(desktop), gameSettings(gameSettings), scoreboard(gameSettings.names),
 		closeAction(closeAction), postCommandAction(postCommandAction) {
+		flaggedTiles = 0;
 	}
 
 	void GameUi::initWindow() {
@@ -40,10 +40,18 @@ namespace mMp {
 		}
 
 		fixedContainer->Put(gameBox,
-			(Vector2f(ct::WindowWidth, ct::WindowHeight) - gameBox->GetRequisition()) / 2.0f);
+			(Vector2f((float) ct::WindowWidth, (float) ct::WindowHeight) - gameBox->GetRequisition()) / 2.0f);
 
 		clockLabel = Label::Create("00:00");
 		fixedContainer->Put(clockLabel, Vector2f(ct::WindowWidth - clockLabel->GetRequisition().x - 20, 10));
+
+		flagCountLabel = Label::Create(getFlagCountStr());
+		auto mineCountLabel = Label::Create(string("/") + to_string(gameSettings.mineCount));
+		auto mineStatBox = Box::Create(Box::Orientation::HORIZONTAL, 2);
+		mineStatBox->Pack(flagCountLabel);
+		mineStatBox->Pack(mineCountLabel);
+		fixedContainer->Put(mineStatBox,
+			Vector2f(ct::WindowWidth - 20, ct::WindowHeight - 20) - mineStatBox->GetRequisition());
 
 		window->Add(fixedContainer);
 	}
@@ -83,6 +91,25 @@ namespace mMp {
 		return str.str();
 	}
 
+	int getDigitNum(int mineCount);
+
+	string GameUi::getFlagCountStr() {
+		ostringstream str;
+
+		int numDigits = getDigitNum(gameSettings.mineCount);
+		str << setfill('0') << setw(numDigits) << flaggedTiles;
+
+		return str.str();
+	}
+
+	int getDigitNum(int mineCount) {
+		int counter = 0;
+		while (mineCount != 0) {
+			counter++;
+			mineCount /= 10;
+		}
+		return counter;
+	}
 
 	void GameUi::postUiEvent(UiEvent event) {
 		cout << "event got to the ui! type: " << (int) event.eventType << '\n';
@@ -108,6 +135,15 @@ namespace mMp {
 
 	void GameUi::handleTileFlag(int line, int column, bool flagged) {
 		auto button = tileButtons[line][column];
-		button->SetClass((flagged ? "Flagged" : "Tile"));
+
+		if (flagged) {
+			button->SetClass("Flagged");
+			flaggedTiles++;
+		}
+		else {
+			button->SetClass("Tile");
+			flaggedTiles--;
+		}
+		flagCountLabel->SetText(getFlagCountStr());
 	}
 }
