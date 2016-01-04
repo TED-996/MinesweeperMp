@@ -8,7 +8,8 @@ namespace mMp
 
 	void SpGameManager::postCommand(Command command) {
 		if (command.commandType == Command::CommandType::TileOpen) {
-			handleReveal(Board::BoardPoint(command.tileOpenCommand.line, command.tileOpenCommand.column));
+			auto tileOpenCommand = command.tileOpenCommand;
+			handleReveal(Board::BoardPoint(tileOpenCommand.line, tileOpenCommand.column));
 		}
 		if (command.commandType == Command::CommandType::TileFlag) {
 			Board::BoardPoint point(command.tileFlagCommand.line, command.tileFlagCommand.column);
@@ -25,7 +26,7 @@ namespace mMp
 			return;
 		}
 		if (board.isMine(rootPoint)) {
-			postUiEventAction(UiEvent(UiEvent::GameOverEvent(false)));
+			postUiEventAction(UiEvent(UiEvent::GameOverEvent(false, 0)));
 			return;
 		}
 		if (board.isRevealed(rootPoint)) {
@@ -42,21 +43,26 @@ namespace mMp
 				UiEvent(UiEvent::TileRevealEvent(point.line, point.column, board.getNeighbors(point))));
 		}
 		if (board.isCompleted()) {
-			postUiEventAction(UiEvent(UiEvent::GameOverEvent(true)));
+			postUiEventAction(UiEvent(UiEvent::GameOverEvent(true, 0)));
 		}
 	}
 
 	void SpGameManager::handleRevealAround(Board::BoardPoint rootPoint) {
-		int flagCount = 0;
+		int flagsAround = 0;
+		int minesAround = 0;
 		for (int i = 0; i < 8; i++) {
 			auto neighbor = rootPoint.getNeighbor((Direction)i);
 			if (board.isFlagged(neighbor)) {
-				flagCount++;
+				flagsAround++;
+			}
+			if (board.isMine(neighbor)) {
+				minesAround++;
 			}
 		}
-		if (flagCount != board.getNeighbors(rootPoint)) {
+		if (flagsAround != minesAround) {
 			return;
 		}
+
 		for (int i = 0; i < 8; i++) {
 			auto neighbor = rootPoint.getNeighbor((Direction)i);
 			if (board.isValid(neighbor) && !board.isRevealed(neighbor) && !board.isFlagged(neighbor)) {

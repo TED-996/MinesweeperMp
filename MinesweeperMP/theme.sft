@@ -11,3 +11,15 @@ Button.Revealed {
 	BackgroundColor: #AAAAAAFF;
 	Color: #333333FF;
 }
+
+Frame.PlayerInactive {
+	BorderColor: #757772FF;
+}
+
+Frame.PlayerActive {
+	BorderColor: #0083FFFF;
+}
+
+Frame.PlayerDead {
+	BorderColor: #FF2619FF;
+}

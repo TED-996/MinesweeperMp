@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <SFGUI/Box.hpp>
 #include <SFGUI/Label.hpp>
+#include <SFGUI/Frame.hpp>
 
 namespace mMp {
 	using namespace sfg;
@@ -8,15 +9,19 @@ namespace mMp {
 	class ScoreboardItem
 	{
 		Label::Ptr scoreLabel;
+		int score;
 
-		Box::Ptr box;
+		Frame::Ptr widget;
 
 	public:
 		explicit ScoreboardItem(string name);
 
-		void setScore(int score);
-		
-		Box::Ptr getBox();
+		void incrementScore();
+		void setPlayerDead();
+		void setPlayerActive();
+		void setPlayerInactive();
+
+		Widget::Ptr getWidget();
 	};
 
 }

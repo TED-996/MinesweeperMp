@@ -31,12 +31,22 @@ namespace mMp {
 		struct GameOverEvent
 		{
 			bool won;
+			int player;
 
-			explicit GameOverEvent(bool won);
+			explicit GameOverEvent(bool won, int player);
 		};
+		struct PlayerDeadEvent
+		{
+			int player;
+
+			explicit PlayerDeadEvent(int player);
+		};
+
 		struct TurnStartEvent
 		{
 			int player;
+
+			explicit TurnStartEvent(int player);
 		};
 
 		enum class UiEventType
@@ -44,7 +54,9 @@ namespace mMp {
 			TileReveal,
 			TileFlag,
 			MineExplode,
-			GameOver
+			GameOver,
+			PlayerDead,
+			TurnStart
 		};
 
 		UiEventType eventType;
@@ -55,11 +67,15 @@ namespace mMp {
 			TileFlagEvent tileFlagEvent;
 			MineExplodeEvent mineExplodeEvent;
 			GameOverEvent gameOverEvent;
+			PlayerDeadEvent playerDeadEvent;
+			TurnStartEvent turnStartEvent;
 		};
 
 		explicit UiEvent(TileRevealEvent event);
 		explicit UiEvent(TileFlagEvent event);
 		explicit UiEvent(MineExplodeEvent event);
 		explicit UiEvent(GameOverEvent event);
+		explicit UiEvent(PlayerDeadEvent event);
+		explicit UiEvent(TurnStartEvent event);
 	};
 }

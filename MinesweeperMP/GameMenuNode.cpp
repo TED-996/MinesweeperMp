@@ -1,12 +1,18 @@
 ﻿#include "GameMenuNode.h"
 #include "GameUi.h"
 #include "SpGameManager.h"
+#include "LocalMpGameManager.h"
 
 namespace mMp {
 	GameMenuNode::GameMenuNode(GameSettings gameSettings, Action closeAction, Desktop& desktop)
 		: MenuNode(desktop,
 			make_shared<GameUi>(gameSettings, getPostCommandFunction(), closeAction, desktop)){
-		gameManager = make_shared<SpGameManager>(gameSettings, getPostUiEventFunction());
+		if (gameSettings.isMp) {
+			gameManager = make_shared<LocalMpGameManager>(gameSettings, getPostUiEventFunction());
+		}
+		else {
+			gameManager = make_shared<SpGameManager>(gameSettings, getPostUiEventFunction());
+		}
 	}
 
 	void GameMenuNode::postUiCommand(Command command) {

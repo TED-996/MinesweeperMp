@@ -9,13 +9,15 @@ namespace mMp {
 	{
 		vector<ScoreboardItem> items;
 
-		Box::Ptr box;
+		Widget::Ptr widget;
 
 	public:
 		explicit Scoreboard(vector<string> names);
 
-		void setScore(int player, int score);
+		void incrementScore(int player);
+		void setPlayerDead(int player);
+		void setActivePlayer(int activePlayer, int inactivePlayer, bool skipInactive);
 
-		Box::Ptr getBox();
+		Widget::Ptr getWidget();
 	};
 }

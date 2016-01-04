@@ -7,6 +7,12 @@ namespace mMp {
 		: UiComponent(desktop), gameSettings(gameSettings), scoreboard(gameSettings.names),
 		closeAction(closeAction), postCommandAction(postCommandAction) {
 		flaggedTiles = 0;
+		playerDead.resize(gameSettings.names.size());
+		currentPlayer = 0;
+
+		if (gameSettings.isMp) {
+			scoreboard.setActivePlayer(0, 0, true);
+		}
 	}
 
 	void GameUi::initWindow() {
@@ -36,7 +42,7 @@ namespace mMp {
 		auto gameBox = Box::Create(Box::Orientation::HORIZONTAL, 0);
 		gameBox->Pack(table, false, false);
 		if (gameSettings.isMp) {
-			gameBox->Pack(scoreboard.getBox());
+			gameBox->Pack(scoreboard.getWidget());
 		}
 
 		fixedContainer->Put(gameBox,
@@ -114,14 +120,23 @@ namespace mMp {
 	void GameUi::postUiEvent(UiEvent event) {
 		cout << "event got to the ui! type: " << (int) event.eventType << '\n';
 		if (event.eventType == UiEvent::UiEventType::TileReveal) {
-			handleTileReveal(event.tileRevealEvent.line, event.tileRevealEvent.column,
-				event.tileRevealEvent.neighbors);
+			auto tileRevealEvent = event.tileRevealEvent;
+			handleTileReveal(tileRevealEvent.line, tileRevealEvent.column, tileRevealEvent.neighbors);
 		}
 		else if (event.eventType == UiEvent::UiEventType::TileFlag) {
-			handleTileFlag(event.tileFlagEvent.line, event.tileFlagEvent.column, event.tileFlagEvent.flagged);
+			auto tileFlagEvent = event.tileFlagEvent;
+			handleTileFlag(tileFlagEvent.line, tileFlagEvent.column, tileFlagEvent.flagged, tileFlagEvent.player);
 		}
 		else if (event.eventType == UiEvent::UiEventType::GameOver) {
 			closeAction();
+		}
+		else if (event.eventType == UiEvent::UiEventType::PlayerDead) {
+			int player = event.playerDeadEvent.player;
+			handlePlayerDead(player);
+		}
+		else if (event.eventType == UiEvent::UiEventType::TurnStart) {
+			int player = event.turnStartEvent.player;
+			handleTurnStart(player);
 		}
 	}
 
@@ -133,7 +148,7 @@ namespace mMp {
 		button->SetClass("Revealed");
 	}
 
-	void GameUi::handleTileFlag(int line, int column, bool flagged) {
+	void GameUi::handleTileFlag(int line, int column, bool flagged, int player) {
 		auto button = tileButtons[line][column];
 
 		if (flagged) {
@@ -144,6 +159,22 @@ namespace mMp {
 			button->SetClass("Tile");
 			flaggedTiles--;
 		}
+
+		if (gameSettings.isMp) {
+			//Flag definitely added; those are checked to be correct and are never removed.
+			scoreboard.incrementScore(player);
+		}
+
 		flagCountLabel->SetText(getFlagCountStr());
+	}
+
+	void GameUi::handlePlayerDead(int player) {
+		playerDead[player] = true;
+		scoreboard.setPlayerDead(player);
+	}
+
+	void GameUi::handleTurnStart(int player) {
+		scoreboard.setActivePlayer(player, currentPlayer, playerDead[currentPlayer]);
+		currentPlayer = player;
 	}
 }

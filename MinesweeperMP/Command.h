@@ -30,7 +30,8 @@ namespace mMp {
 		enum class CommandType
 		{
 			TileOpen,
-			TileFlag
+			TileFlag,
+			TurnEnd
 		};
 
 		CommandType commandType;
@@ -39,9 +40,11 @@ namespace mMp {
 		{
 			TileOpenCommand tileOpenCommand;
 			TileFlagCommand tileFlagCommand;
+			TurnEndCommand turnEndCommand;
 		};
 
 		explicit Command(TileOpenCommand command);
 		explicit Command(TileFlagCommand command);
+		explicit Command(TurnEndCommand command);
 	};
 }

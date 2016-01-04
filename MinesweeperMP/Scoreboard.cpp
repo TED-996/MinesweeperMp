@@ -1,21 +1,39 @@
 ﻿#include "Scoreboard.h"
+#include <SFGUI/Frame.hpp>
 
 namespace mMp {
 	Scoreboard::Scoreboard(vector<string> names) {
 		items = vector<ScoreboardItem>();
-		box = Box::Create(Box::Orientation::VERTICAL, 2);
+		auto box = Box::Create(Box::Orientation::VERTICAL, 2);
 		for (auto name : names) {
 			ScoreboardItem item(name);
 			items.push_back(item);
-			box->Pack(item.getBox());
+			box->Pack(item.getWidget());
 		}
+		auto frame = Frame::Create("Scroreboard");
+
+		frame->Add(box);
+
+		widget = frame;
 	}
 
-	void Scoreboard::setScore(int player, int score) {
-		items[player].setScore(score);
+	void Scoreboard::incrementScore(int player) {
+		items[player].incrementScore();
 	}
 
-	Box::Ptr Scoreboard::getBox() {
-		return box;
+	void Scoreboard::setPlayerDead(int player) {
+		items[player].setPlayerDead();
 	}
+
+	void Scoreboard::setActivePlayer(int activePlayer, int inactivePlayer, bool skipInactive) {
+		if (!skipInactive && activePlayer != inactivePlayer) {
+			items[inactivePlayer].setPlayerInactive();
+		}
+		items[activePlayer].setPlayerActive();
+	}
+
+	Widget::Ptr Scoreboard::getWidget() {
+		return widget;
+	}
+
 }

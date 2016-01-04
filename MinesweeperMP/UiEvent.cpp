@@ -14,8 +14,16 @@ namespace mMp
 		: line(line), column(column) {
 	}
 
-	UiEvent::GameOverEvent::GameOverEvent(bool won)
-		: won(won) {
+	UiEvent::GameOverEvent::GameOverEvent(bool won, int player)
+		: won(won), player(player) {
+	}
+
+	UiEvent::PlayerDeadEvent::PlayerDeadEvent(int player)
+		: player(player) {
+	}
+
+	UiEvent::TurnStartEvent::TurnStartEvent(int player)
+		: player(player) {
 	}
 
 	UiEvent::UiEvent(TileRevealEvent event) {
@@ -36,5 +44,15 @@ namespace mMp
 	UiEvent::UiEvent(GameOverEvent event) {
 		gameOverEvent = event;
 		eventType = UiEventType::GameOver;
+	}
+
+	UiEvent::UiEvent(PlayerDeadEvent event) {
+		playerDeadEvent = event;
+		eventType = UiEventType::PlayerDead;
+	}
+
+	UiEvent::UiEvent(TurnStartEvent event) {
+		turnStartEvent = event;
+		eventType = UiEventType::TurnStart;
 	}
 }

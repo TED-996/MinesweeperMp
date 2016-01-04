@@ -23,4 +23,9 @@ namespace mMp
 		tileFlagCommand = command;
 		commandType = CommandType::TileFlag;
 	}
+
+	Command::Command(TurnEndCommand command) {
+		turnEndCommand = command;
+		commandType = CommandType::TurnEnd;
+	}
 }

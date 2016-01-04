@@ -14,6 +14,8 @@ namespace mMp {
 		GameSettings gameSettings;
 		Button::Ptr tileButtons[Board::maxSize][Board::maxSize];
 		Scoreboard scoreboard;
+		vector<bool> playerDead;
+		int currentPlayer;
 
 		Clock clock;
 		Label::Ptr clockLabel;
@@ -41,7 +43,9 @@ namespace mMp {
 		string getFlagCountStr();
 		
 		void handleTileReveal(int line, int column, int neighbors);
-		void handleTileFlag(int line, int column, bool flagged);
+		void handleTileFlag(int line, int column, bool flagged, int player);
+		void handlePlayerDead(int player);
+		void handleTurnStart(int player);
 
 	};
 }

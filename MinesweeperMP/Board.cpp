@@ -101,16 +101,15 @@ namespace mMp {
 		//stop complaining..
 		while (qS < (int) points.size()) {
 			BoardPoint item = points[qS++];
-			if (!revealed[item.line][item.column]) {
-				revealed[item.line][item.column] = true;
-				revealCount++;
-			}
 
 			if (getNeighbors(item) == 0) {
 				for (int i = 0; i < 8; i++) {
 					BoardPoint neighbor = item.getNeighbor((Direction)i);
 					if (isValid(neighbor) && !isRevealed(neighbor)) {
 						points.push_back(neighbor);
+
+						revealed[neighbor.line][neighbor.column] = true;
+						revealCount++;
 					}
 				}
 			}
