@@ -12,7 +12,7 @@ namespace mMp {
 		GameSettings gameSettings;
 
 		int currentPlayer;
-		int reveals;
+		int revealsThisTurn;
 		vector<bool> playerDead;
 		vector<int> scores;
 

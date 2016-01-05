@@ -25,8 +25,10 @@ namespace mMp {
 		bool mines[maxSize][maxSize];
 		bool revealed[maxSize][maxSize];
 		bool flagged[maxSize][maxSize];
+		int neighbors[maxSize][maxSize];
 
 		int revealCount;
+		int flagCount;
 
 	public:
 		Board(int size, int mineCount);
@@ -37,7 +39,7 @@ namespace mMp {
 		bool isValid(BoardPoint point);
 		int getNeighbors(BoardPoint point);
 
-		bool isCompleted();
+		bool isCompleted(bool byFlags = false);
 
 		vector<BoardPoint> reveal(BoardPoint root);
 		void toggleFlag(BoardPoint point);

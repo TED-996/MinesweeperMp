@@ -35,17 +35,11 @@ namespace mMp {
 	}
 
 	int Board::getNeighbors(BoardPoint point) {
-		int count = 0;
-		for (int i = 0; i < 8; i++) {
-			if (isMine(point.getNeighbor((Direction) i))) {
-				count++;
-			}
-		}
-		return count;
+		return neighbors[point.line][point.column];
 	}
 
-	bool Board::isCompleted() {
-		return size * size - revealCount == mineCount;
+	bool Board::isCompleted(bool byFlags) {
+		return size * size - revealCount == mineCount && (!byFlags || flagCount == mineCount);
 	}
 
 	void Board::generate() {
@@ -86,12 +80,31 @@ namespace mMp {
 				mines[l][c] = (mineProb[l][c] > maxSafe);
 				revealed[l][c] = false;
 				flagged[l][c] = false;
+				neighbors[l][c] = 0;
+			}
+		}
+
+		for (int l = 0; l < size; l++) {
+			for (int c = 0; c < size; c++) {
+				if (mines[l][c]) {
+					//Unoptimized, but likely not a hotspot.
+					BoardPoint rootPoint = BoardPoint(l, c);
+					for (int i = 0; i < 8; i++) {
+						auto neighbor = rootPoint.getNeighbor((Direction)i);
+						if (isValid(neighbor)) {
+							neighbors[neighbor.line][neighbor.column]++;
+						}
+					}
+				}
 			}
 		}
 	}
 
+	//TODO: Optimize, this is slow.
 	vector<Board::BoardPoint> Board::reveal(BoardPoint root) {
 		vector<BoardPoint> points;
+		//Preliminary reservation. It doesn't hurt.
+		points.reserve(size);
 		int qS = 0;
 		
 		if (!isMine(root) && !isRevealed(root)) {
@@ -119,6 +132,13 @@ namespace mMp {
 	}
 
 	void Board::toggleFlag(BoardPoint point) {
-		flagged[point.line][point.column] = !flagged[point.line][point.column];
+		if (flagged[point.line][point.column]) {
+			flagged[point.line][point.column] = false;
+			flagCount--;
+		}
+		else {
+			flagged[point.line][point.column] = true;
+			flagCount++;
+		}
 	}
 }

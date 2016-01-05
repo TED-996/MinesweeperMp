@@ -6,7 +6,7 @@ namespace mMp
 		: postUiEventAction(postUiEventAction), board(gameSettings.boardSize, gameSettings.mineCount),
 		gameSettings(gameSettings) {
 		currentPlayer = 0;
-		reveals = 0;
+		revealsThisTurn = 0;
 		playerDead.resize(gameSettings.names.size(), false);
 		scores.resize(gameSettings.names.size(), 0);
 	}
@@ -32,7 +32,7 @@ namespace mMp
 		do {
 			currentPlayer = (currentPlayer + 1) % gameSettings.names.size();
 		} while (playerDead[currentPlayer] && currentPlayer != player);
-		reveals = 0;
+		revealsThisTurn = 0;
 
 		postUiEventAction(UiEvent(UiEvent::TurnStartEvent(currentPlayer)));
 	}
@@ -48,7 +48,7 @@ namespace mMp
 		if (board.isRevealed(rootPoint)) {
 			return;
 		}
-		if (reveals >= 3) {
+		if (revealsThisTurn >= 3) {
 			return;
 		}
 		if (board.isMine(rootPoint)) {
@@ -57,7 +57,7 @@ namespace mMp
 		}
 
 		postUiEventAction(UiEvent(UiEvent::RevealAcceptedEvent()));
-		reveals++;
+		revealsThisTurn++;
 		revealPoint(rootPoint);
 	}
 
@@ -71,9 +71,7 @@ namespace mMp
 			postUiEventAction(
 				UiEvent(UiEvent::TileRevealEvent(point.line, point.column, board.getNeighbors(point))));
 		}
-		if (board.isCompleted()) {
-			postUiEventAction(UiEvent(UiEvent::GameOverEvent(true, getWinner())));
-		}
+		
 	}
 
 	int LocalMpGameManager::getWinner() {
@@ -100,11 +98,14 @@ namespace mMp
 		}
 		if (!board.isMine(point)) {
 			KillCurrentPlayer();
+			return;
 		}
-		else {
-			board.toggleFlag(point);
-			postUiEventAction(
-				UiEvent(UiEvent::TileFlagEvent(point.line, point.column, board.isFlagged(point), currentPlayer)));
+		board.toggleFlag(point);
+		postUiEventAction(
+			UiEvent(UiEvent::TileFlagEvent(point.line, point.column, board.isFlagged(point), currentPlayer)));
+
+		if (board.isCompleted(true)) {
+			postUiEventAction(UiEvent(UiEvent::GameOverEvent(true, getWinner())));
 		}
 	}
 
