@@ -16,12 +16,14 @@ namespace mMp {
 		Scoreboard scoreboard;
 		vector<bool> playerDead;
 		int currentPlayer;
+		int reveals;
 
 		Clock clock;
 		Label::Ptr clockLabel;
 
 		int flaggedTiles;
 		Label::Ptr flagCountLabel;
+		ProgressBar::Ptr revealCountBar;
 
 		Action closeAction;
 		Action1P<Command> postCommandAction;
@@ -39,6 +41,7 @@ namespace mMp {
 		Button::Ptr getNewButton(int line, int column, int size);
 		void onButtonReveal(int line, int column);
 		void onButtonFlag(int line, int column);
+		void onTurnEnd();
 
 		string getFlagCountStr();
 		
@@ -46,6 +49,7 @@ namespace mMp {
 		void handleTileFlag(int line, int column, bool flagged, int player);
 		void handlePlayerDead(int player);
 		void handleTurnStart(int player);
+		void handleRevealAccepted();
 
 	};
 }

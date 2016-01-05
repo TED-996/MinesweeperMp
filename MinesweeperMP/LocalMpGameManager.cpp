@@ -45,6 +45,9 @@ namespace mMp
 		if (board.isFlagged(rootPoint)) {
 			return;
 		}
+		if (board.isRevealed(rootPoint)) {
+			return;
+		}
 		if (reveals >= 3) {
 			return;
 		}
@@ -53,6 +56,7 @@ namespace mMp
 			return;
 		}
 
+		postUiEventAction(UiEvent(UiEvent::RevealAcceptedEvent()));
 		reveals++;
 		revealPoint(rootPoint);
 	}

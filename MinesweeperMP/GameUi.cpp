@@ -9,6 +9,7 @@ namespace mMp {
 		flaggedTiles = 0;
 		playerDead.resize(gameSettings.names.size());
 		currentPlayer = 0;
+		reveals = 0;
 
 		if (gameSettings.isMp) {
 			scoreboard.setActivePlayer(0, 0, true);
@@ -39,10 +40,29 @@ namespace mMp {
 		auto fixedContainer = Fixed::Create();
 		fixedContainer->Put(introBox, Vector2f(10, 10));
 
-		auto gameBox = Box::Create(Box::Orientation::HORIZONTAL, 0);
+		auto gameBox = Box::Create(Box::Orientation::HORIZONTAL, 5);
 		gameBox->Pack(table, false, false);
+
 		if (gameSettings.isMp) {
-			gameBox->Pack(scoreboard.getWidget());
+			auto rightPane = Box::Create(Box::Orientation::VERTICAL);
+			rightPane->Pack(scoreboard.getWidget());
+
+			auto turnFrame = Frame::Create("Turn");
+			auto turnBox = Box::Create(Box::Orientation::VERTICAL, 5);
+
+			revealCountBar = ProgressBar::Create(ProgressBar::Orientation::HORIZONTAL);
+			revealCountBar->SetFraction(0);
+			revealCountBar->SetRequisition(Vector2f(10, 10));
+			turnBox->Pack(revealCountBar);
+
+			auto turnEndButton = Button::Create("End turn");
+			turnEndButton->GetSignal(Widget::OnLeftClick).Connect(bind(&GameUi::onTurnEnd, this));
+			turnBox->Pack(turnEndButton);
+			
+			turnFrame->Add(turnBox);
+			rightPane->Pack(turnFrame);
+
+			gameBox->Pack(rightPane);
 		}
 
 		fixedContainer->Put(gameBox,
@@ -79,6 +99,10 @@ namespace mMp {
 
 	void GameUi::onButtonFlag(int line, int column) {
 		postCommandAction(Command(Command::TileFlagCommand(line, column, currentPlayer)));
+	}
+
+	void GameUi::onTurnEnd() {
+		postCommandAction(Command(Command::TurnEndCommand(currentPlayer)));
 	}
 
 	string timeToString(Time time);
@@ -138,6 +162,9 @@ namespace mMp {
 			int player = event.turnStartEvent.player;
 			handleTurnStart(player);
 		}
+		else if (event.eventType == UiEvent::UiEventType::RevealAccepted) {
+			handleRevealAccepted();
+		}
 	}
 
 	void GameUi::handleTileReveal(int line, int column, int neighbors) {
@@ -174,7 +201,21 @@ namespace mMp {
 	}
 
 	void GameUi::handleTurnStart(int player) {
-		scoreboard.setActivePlayer(player, currentPlayer, playerDead[currentPlayer]);
-		currentPlayer = player;
+		if (gameSettings.isMp) {
+			scoreboard.setActivePlayer(player, currentPlayer, playerDead[currentPlayer]);
+			currentPlayer = player;
+
+			reveals = 0;
+			revealCountBar->SetFraction(0);
+		}
+	}
+
+	void GameUi::handleRevealAccepted() {
+		if (gameSettings.isMp) {
+			if (reveals < 3) {
+				reveals++;
+			}
+			revealCountBar->SetFraction(reveals / 3.0);
+		}
 	}
 }

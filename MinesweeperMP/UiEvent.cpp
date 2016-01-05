@@ -26,6 +26,9 @@ namespace mMp
 		: player(player) {
 	}
 
+	UiEvent::RevealAcceptedEvent::RevealAcceptedEvent() {
+	}
+
 	UiEvent::UiEvent(TileRevealEvent event) {
 		tileRevealEvent = event;
 		eventType = UiEventType::TileReveal;
@@ -54,5 +57,10 @@ namespace mMp
 	UiEvent::UiEvent(TurnStartEvent event) {
 		turnStartEvent = event;
 		eventType = UiEventType::TurnStart;
+	}
+
+	UiEvent::UiEvent(RevealAcceptedEvent event) {
+		revealAcceptedEvent = event;
+		eventType = UiEventType::RevealAccepted;
 	}
 }
