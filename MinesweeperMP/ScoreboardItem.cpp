@@ -2,14 +2,21 @@
 #include <SFGUI/Frame.hpp>
 
 namespace mMp {
+	using namespace sf;
+
 	ScoreboardItem::ScoreboardItem(string name) {
 		score = 0;
 
 		auto box = Box::Create(Box::Orientation::HORIZONTAL, 2);
 		
 		auto nameLabel = Label::Create(name);
-		scoreLabel = Label::Create("0");
+		nameLabel->SetAlignment(Vector2f(0.0f, 0.5f));
 
+		scoreLabel = Label::Create();
+		scoreLabel->SetText("0");
+		scoreLabel->SetRequisition(Vector2f(40.0f, 0.0f));
+		scoreLabel->SetAlignment(Vector2f(1.0f, 0.5f));
+			
 		box->Pack(scoreLabel, false, false);
 		box->PackStart(nameLabel, true, true);
 
