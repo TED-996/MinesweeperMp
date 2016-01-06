@@ -79,6 +79,10 @@ namespace mMp {
 		fixedContainer->Put(mineStatBox,
 			Vector2f(ct::WindowWidth - 20, ct::WindowHeight - 20) - mineStatBox->GetRequisition());
 
+		messageLabel = Label::Create("Good luck!");
+		messageTimeout = sf::seconds(3);
+		fixedContainer->Put(messageLabel, Vector2f(10, ct::WindowHeight - 20 - mineStatBox->GetRequisition().y));
+
 		window->Add(fixedContainer);
 	}
 
@@ -108,8 +112,13 @@ namespace mMp {
 	string timeToString(Time time);
 
 	void GameUi::update(float seconds) {
-		auto time = clock.getElapsedTime();
+		auto time = gameClock.getElapsedTime();
 		clockLabel->SetText(timeToString(time));
+
+		if (messageTimeout != Time::Zero && messageTimer.getElapsedTime() >= messageTimeout) {
+			messageLabel->SetText("");
+			messageTimeout = Time::Zero;
+		}
 	}
 
 	string timeToString(Time time) {
@@ -132,6 +141,12 @@ namespace mMp {
 		return str.str();
 	}
 
+	void GameUi::showMessage(string message, Time timeout) {
+		messageLabel->SetText(message);
+		messageTimeout = timeout;
+		messageTimer.restart();
+	}
+
 	int getDigitNum(int mineCount) {
 		int counter = 0;
 		while (mineCount != 0) {
@@ -152,7 +167,8 @@ namespace mMp {
 			handleTileFlag(tileFlagEvent.line, tileFlagEvent.column, tileFlagEvent.flagged, tileFlagEvent.player);
 		}
 		else if (event.eventType == UiEvent::UiEventType::GameOver) {
-			closeAction();
+			auto gameOverEvent = event.gameOverEvent;
+			handleGameOver(gameOverEvent.won, gameOverEvent.player);
 		}
 		else if (event.eventType == UiEvent::UiEventType::PlayerDead) {
 			int player = event.playerDeadEvent.player;
@@ -195,9 +211,27 @@ namespace mMp {
 		flagCountLabel->SetText(getFlagCountStr());
 	}
 
+	void GameUi::handleGameOver(bool won, int winner) {
+		string message;
+		if (!won) {
+			message = "You lost!";
+		}
+		else {
+			if (gameSettings.isMp) {
+				message = gameSettings.names[winner] + " won!";
+			}
+			else {
+				message = "You won!";
+			}
+		}
+		showMessage(message, Time::Zero);
+	}
+
 	void GameUi::handlePlayerDead(int player) {
 		playerDead[player] = true;
 		scoreboard.setPlayerDead(player);
+
+		showMessage(gameSettings.names[player] + " died!", sf::seconds(3));
 	}
 
 	void GameUi::handleTurnStart(int player) {

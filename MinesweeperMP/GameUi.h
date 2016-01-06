@@ -18,12 +18,16 @@ namespace mMp {
 		int currentPlayer;
 		int reveals;
 
-		Clock clock;
+		Clock gameClock;
 		Label::Ptr clockLabel;
 
 		int flaggedTiles;
 		Label::Ptr flagCountLabel;
 		ProgressBar::Ptr revealCountBar;
+
+		Label::Ptr messageLabel;
+		Clock messageTimer;
+		Time messageTimeout;
 
 		Action closeAction;
 		Action1P<Command> postCommandAction;
@@ -44,9 +48,11 @@ namespace mMp {
 		void onTurnEnd();
 
 		string getFlagCountStr();
+		void showMessage(string message, Time timeout);
 		
 		void handleTileReveal(int line, int column, int neighbors);
 		void handleTileFlag(int line, int column, bool flagged, int player);
+		void handleGameOver(bool won, int winner);
 		void handlePlayerDead(int player);
 		void handleTurnStart(int player);
 		void handleRevealAccepted();

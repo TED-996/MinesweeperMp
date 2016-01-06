@@ -16,6 +16,9 @@ namespace mMp {
 	Board::Board(int size, int mineCount)
 		: size(size), mineCount(mineCount) {
 		generate();
+
+		revealCount = 0;
+		flagCount = 0;
 	}
 
 	bool Board::isValid(BoardPoint point) {
@@ -39,7 +42,11 @@ namespace mMp {
 	}
 
 	bool Board::isCompleted(bool byFlags) {
-		return size * size - revealCount == mineCount && (!byFlags || flagCount == mineCount);
+		if (byFlags) {
+			//Assume all flags are correct (checked by GameManager)
+			return flagCount == mineCount;
+		}
+		return size * size - revealCount == mineCount;
 	}
 
 	void Board::generate() {
@@ -114,6 +121,7 @@ namespace mMp {
 		//stop complaining..
 		while (qS < (int) points.size()) {
 			BoardPoint item = points[qS++];
+			revealCount++;
 
 			if (getNeighbors(item) == 0) {
 				for (int i = 0; i < 8; i++) {
@@ -122,7 +130,6 @@ namespace mMp {
 						points.push_back(neighbor);
 
 						revealed[neighbor.line][neighbor.column] = true;
-						revealCount++;
 					}
 				}
 			}
