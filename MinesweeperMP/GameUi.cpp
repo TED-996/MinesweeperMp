@@ -17,32 +17,25 @@ namespace mMp {
 		}
 	}
 
-	Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment);
+	Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment, Vector2f scale = Vector2f(1.0f, 1.0f));
 
 	void GameUi::initWindow() {
 		window->SetStyle(Style::Fullscreen);
-		float windowWidth = ct::WindowWidth * 0.9f;
-		float windowHeight = ct::WindowHeight * 0.9f;
+		window->SetRequisition(Vector2f(ct::WindowWidth, ct::WindowHeight));
 
 		auto mainBox = Box::Create(Box::Orientation::VERTICAL);
-		mainBox->SetRequisition(Vector2f(windowWidth, windowHeight));
 
 		auto topBox = Box::Create(Box::Orientation::HORIZONTAL);
-		topBox->SetRequisition(Vector2f(windowWidth, 0));
 
-		auto introLabel = Label::Create("Find the mines!");
 		auto backButton = Button::Create("Back");
 		backButton->GetSignal(Widget::OnLeftClick).Connect(closeAction);
-		auto introBox = Box::Create(Box::Orientation::VERTICAL, 5);
-		introBox->Pack(introLabel);
-		introBox->Pack(backButton);
-		topBox->Pack(introBox, false, false);
+		topBox->Pack(backButton, false, false);
 
 		clockLabel = Label::Create("00:00");
-		topBox->Pack(createAlignment(clockLabel, Vector2f(1.0f, 0.5f)), false, false);
+		clockLabel->SetAlignment(Vector2f(1.0f, 0.5f));
+		topBox->Pack(createAlignment(clockLabel, Vector2f(1.0f, 0.5f)), true, true);
 
 		auto middleBox = Box::Create(Box::Orientation::HORIZONTAL);
-		middleBox->SetRequisition(Vector2f(windowWidth, 0));
 
 		auto gameBox = Box::Create(Box::Orientation::HORIZONTAL, 5);
 		auto table = Table::Create();
@@ -81,32 +74,33 @@ namespace mMp {
 		middleBox->Pack(createAlignment(gameBox, Vector2f(0.5f, 0.5f)));
 
 		auto bottomBox = Box::Create(Box::Orientation::HORIZONTAL);
-		bottomBox->SetRequisition(Vector2f(windowWidth, 0));
 
 		messageLabel = Label::Create("Good luck!");
 		messageTimeout = sf::seconds(3);
-		bottomBox->Pack(messageLabel);
+		bottomBox->Pack(messageLabel, false, true);
+		bottomBox->Pack(Separator::Create(Separator::Orientation::VERTICAL), true, true);
 
 		flagCountLabel = Label::Create(getFlagCountStr());
 		auto mineCountLabel = Label::Create(string("/") + to_string(gameSettings.mineCount));
 		auto mineStatBox = Box::Create(Box::Orientation::HORIZONTAL, 2);
-		mineStatBox->Pack(flagCountLabel);
+		mineStatBox->Pack(flagCountLabel, false, false);
 		mineStatBox->Pack(mineCountLabel, false, false);
-		bottomBox->Pack(createAlignment(mineStatBox, Vector2f(1.0f, 0.5f)), true, true);
+		bottomBox->Pack(createAlignment(mineStatBox, Vector2f(1.0f, 0.5f), Vector2f(0.0f, 0.0f)), true, true);
 
-		mainBox->Pack(topBox, false, false);
+		mainBox->Pack(topBox, true, true);
 		mainBox->Pack(gameBox, true, true);
-		mainBox->Pack(bottomBox, false, false);
+		mainBox->Pack(bottomBox, true, true);
 
 		window->Add(createAlignment(mainBox, Vector2f(0.5f, 0.5f)));
 
 		selectTile(selectedPoint);
 	}
 
-	Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment) {
+	Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment, Vector2f scale) {
 		auto result = Alignment::Create();
 		result->Add(widget);
 		result->SetAlignment(alignment);
+		result->SetScale(scale);
 		return result;
 	}
 
@@ -204,7 +198,7 @@ namespace mMp {
 		ostringstream str;
 
 		int numDigits = getDigitNum(gameSettings.mineCount);
-		str << setfill('0') << setw(numDigits) << flaggedTiles;
+		str << "Mines: " << setfill('0') << setw(numDigits) << flaggedTiles;
 
 		return str.str();
 	}
