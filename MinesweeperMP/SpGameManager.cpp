@@ -4,9 +4,13 @@ namespace mMp
 {
 	SpGameManager::SpGameManager(GameSettings gameSettings, Action1P<UiEvent> postUiEventAction)
 		: postUiEventAction(postUiEventAction), board(gameSettings.boardSize, gameSettings.mineCount) {
+		gameOver = false;
 	}
 
 	void SpGameManager::postCommand(Command command) {
+		if (gameOver) {
+			return;
+		}
 		if (command.commandType == Command::CommandType::TileOpen) {
 			auto tileOpenCommand = command.tileOpenCommand;
 			handleReveal(Board::BoardPoint(tileOpenCommand.line, tileOpenCommand.column));
@@ -27,6 +31,7 @@ namespace mMp
 		}
 		if (board.isMine(rootPoint)) {
 			postUiEventAction(UiEvent(UiEvent::GameOverEvent(false, 0)));
+			gameOver = true;
 			return;
 		}
 		if (board.isRevealed(rootPoint)) {
@@ -44,6 +49,7 @@ namespace mMp
 		}
 		if (board.isCompleted()) {
 			postUiEventAction(UiEvent(UiEvent::GameOverEvent(true, 0)));
+			gameOver = true;
 		}
 	}
 

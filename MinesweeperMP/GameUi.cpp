@@ -5,11 +5,12 @@ namespace mMp {
 	GameUi::GameUi(GameSettings gameSettings, Action1P<Command> postCommandAction, Action closeAction,
 		Desktop& desktop)
 		: UiComponent(desktop), gameSettings(gameSettings), scoreboard(gameSettings.names),
-		closeAction(closeAction), postCommandAction(postCommandAction) {
+		closeAction(closeAction), postCommandAction(postCommandAction), selectedPoint(0, 0) {
 		flaggedTiles = 0;
 		playerDead.resize(gameSettings.names.size());
 		currentPlayer = 0;
 		reveals = 0;
+		stillSelected = false;
 
 		if (gameSettings.isMp) {
 			scoreboard.setActivePlayer(0, 0, true);
@@ -51,7 +52,7 @@ namespace mMp {
 				auto tileButton = getNewButton(l, c, buttonSize);
 
 				tileButtons[l][c] = tileButton;
-				table->Attach(tileButton, Rect<Uint32>(l, c, 1, 1));
+				table->Attach(tileButton, Rect<Uint32>(c, l, 1, 1));
 			}
 		}
 		gameBox->Pack(table, false, false);
@@ -98,6 +99,8 @@ namespace mMp {
 		mainBox->Pack(bottomBox, false, false);
 
 		window->Add(createAlignment(mainBox, Vector2f(0.5f, 0.5f)));
+
+		selectTile(selectedPoint);
 	}
 
 	Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment) {
@@ -133,13 +136,57 @@ namespace mMp {
 	string timeToString(Time time);
 
 	void GameUi::update(float seconds) {
-		auto time = gameClock.getElapsedTime();
-		clockLabel->SetText(timeToString(time));
+		clockLabel->SetText(timeToString(gameClock.getElapsedTime()));
 
 		if (messageTimeout != Time::Zero && messageTimer.getElapsedTime() >= messageTimeout) {
 			messageLabel->SetText("");
 			messageTimeout = Time::Zero;
 		}
+
+		if (stillSelected && selectionTimer.getElapsedTime() >= sf::seconds(4)) {
+			unselectTile(selectedPoint);
+		}
+	}
+
+	bool GameUi::handleEvent(Event event) {
+		if (event.type != Event::KeyPressed) {
+			return false;
+		}
+		auto keyEvent = event.key;
+
+		if (keyEvent.code == Keyboard::Return) {
+			onButtonFlag(selectedPoint.line, selectedPoint.column);
+			return true;
+		}
+		if (keyEvent.code == Keyboard::Space) {
+			onButtonReveal(selectedPoint.line, selectedPoint.column);
+			return true;
+		}
+
+		Direction direction;
+		if (keyEvent.code == Keyboard::Up) {
+			direction = Direction::Up;
+		}
+		else if (keyEvent.code == Keyboard::Right) {
+			direction = Direction::Right;
+		}
+		else if (keyEvent.code == Keyboard::Down) {
+			direction = Direction::Down;
+		}
+		else if (keyEvent.code == Keyboard::Left) {
+			direction = Direction::Left;
+		}
+		else {
+			return false;
+		}
+		auto oldSelection = selectedPoint;
+		selectedPoint = selectedPoint.getNeighbor(direction).clampMax(gameSettings.boardSize);
+		if (oldSelection != selectedPoint) {
+			unselectTile(oldSelection);
+			selectTile(selectedPoint);
+		}
+
+		return true;
 	}
 
 	string timeToString(Time time) {
@@ -166,6 +213,25 @@ namespace mMp {
 		messageLabel->SetText(message);
 		messageTimeout = timeout;
 		messageTimer.restart();
+	}
+
+	void GameUi::unselectTile(Board::BoardPoint boardPoint) {
+		if (!stillSelected) {
+			return;
+		}
+
+		auto button = tileButtons[boardPoint.line][boardPoint.column];
+		auto buttonClass = button->GetClass();
+		int offset = string("Selected").length();
+		button->SetClass(buttonClass.substr(offset, buttonClass.length() - offset));
+		stillSelected = false;
+	}
+
+	void GameUi::selectTile(Board::BoardPoint boardPoint) {
+		auto button = tileButtons[boardPoint.line][boardPoint.column];
+		button->SetClass("Selected" + button->GetClass());
+		stillSelected = true;
+		selectionTimer.restart();
 	}
 
 	int getDigitNum(int mineCount) {
@@ -209,18 +275,19 @@ namespace mMp {
 		if (neighbors != 0) {
 			button->SetLabel(String((char)(neighbors + '0')));
 		}
-		button->SetClass("Revealed");
+		button->SetClass(button->GetClass() + "Revealed");
 	}
 
 	void GameUi::handleTileFlag(int line, int column, bool flagged, int player) {
 		auto button = tileButtons[line][column];
 
 		if (flagged) {
-			button->SetClass("Flagged");
+			button->SetClass(button->GetClass() + "Flagged");
 			flaggedTiles++;
 		}
 		else {
-			button->SetClass("Tile");
+			string buttonClass = button->GetClass();
+			button->SetClass(buttonClass.substr(0, buttonClass.length() - string("Flagged").length()));
 			flaggedTiles--;
 		}
 

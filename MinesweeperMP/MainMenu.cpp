@@ -21,7 +21,7 @@ namespace mMp
 	}
 
 	GameSettings getMpGameSettings() {
-		return GameSettings(20, 20, true, true, false,
+		return GameSettings(20, 100, true, true, false,
 			vector<string>({"Player 1", "Player 2", "Player 3", "Player 4"}));
 	}
 }

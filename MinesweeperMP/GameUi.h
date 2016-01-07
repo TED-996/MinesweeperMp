@@ -25,6 +25,10 @@ namespace mMp {
 		Label::Ptr flagCountLabel;
 		ProgressBar::Ptr revealCountBar;
 
+		Board::BoardPoint selectedPoint;
+		bool stillSelected;
+		Clock selectionTimer;
+
 		Label::Ptr messageLabel;
 		Clock messageTimer;
 		Time messageTimeout;
@@ -39,6 +43,7 @@ namespace mMp {
 		void postUiEvent(UiEvent event);
 
 		void update(float seconds) override;
+		bool handleEvent(Event event) override;
 	protected:
 		void initWindow() override;
 	private:
@@ -49,6 +54,9 @@ namespace mMp {
 
 		string getFlagCountStr();
 		void showMessage(string message, Time timeout);
+
+		void unselectTile(Board::BoardPoint boardPoint);
+		void selectTile(Board::BoardPoint boardPoint);
 		
 		void handleTileReveal(int line, int column, int neighbors);
 		void handleTileFlag(int line, int column, bool flagged, int player);

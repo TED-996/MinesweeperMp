@@ -13,6 +13,14 @@ namespace mMp {
 		return BoardPoint(line + dvL[(int) direction], column + dvC[(int) direction]);
 	}
 
+	int clampInt(int x, int min, int max) {
+		return x <= min ? min : (x >= max ? max : x);
+	}
+
+	Board::BoardPoint Board::BoardPoint::clampMax(int maxSize) {
+		return BoardPoint(clampInt(line, 0, maxSize - 1), clampInt(column, 0, maxSize - 1));
+	}
+
 	Board::Board(int size, int mineCount)
 		: size(size), mineCount(mineCount) {
 		generate();
@@ -116,12 +124,13 @@ namespace mMp {
 		
 		if (!isMine(root) && !isRevealed(root)) {
 			points.push_back(root);
+			revealed[root.line][root.column] = true;
+			revealCount++;
 		}
 
 		//stop complaining..
 		while (qS < (int) points.size()) {
 			BoardPoint item = points[qS++];
-			revealCount++;
 
 			if (getNeighbors(item) == 0) {
 				for (int i = 0; i < 8; i++) {
@@ -130,6 +139,7 @@ namespace mMp {
 						points.push_back(neighbor);
 
 						revealed[neighbor.line][neighbor.column] = true;
+						revealCount++;
 					}
 				}
 			}

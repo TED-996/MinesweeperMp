@@ -15,6 +15,15 @@ namespace mMp {
 			BoardPoint(int line, int column);
 
 			BoardPoint getNeighbor(Direction direction);
+			BoardPoint clampMax(int max);
+
+			friend bool operator==(const BoardPoint& lhs, const BoardPoint& rhs) {
+				return lhs.line == rhs.line && lhs.column == rhs.column;
+			}
+
+			friend bool operator!=(const BoardPoint& lhs, const BoardPoint& rhs) {
+				return !(lhs == rhs);
+			}
 		};
 	public:
 		static const int maxSize = 100;

@@ -11,6 +11,9 @@ namespace mMp {
 	{
 		Action1P<UiEvent> postUiEventAction;
 		Board board;
+
+		bool gameOver;
+
 	public:
 		SpGameManager(GameSettings gameSettings, Action1P<UiEvent> postUiEventAction);
 
