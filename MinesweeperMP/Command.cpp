@@ -14,6 +14,10 @@ namespace mMp
 		: player(player) {
 	}
 
+	Command::Command() {
+		commandType = CommandType::Invalid;
+	}
+
 	Command::Command(TileOpenCommand command) {
 		tileOpenCommand = command;
 		commandType = CommandType::TileOpen;
@@ -27,5 +31,9 @@ namespace mMp
 	Command::Command(TurnEndCommand command) {
 		turnEndCommand = command;
 		commandType = CommandType::TurnEnd;
+	}
+
+	Command Command::getInvalidCommand() {
+		return Command();
 	}
 }

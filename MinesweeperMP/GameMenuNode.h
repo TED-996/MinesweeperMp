@@ -9,6 +9,9 @@ namespace mMp {
 	public:
 		GameMenuNode(GameSettings gameSettings, Action closeAction, Desktop& desktop);
 
+
+		bool handleEvent(Event event) override;
+		void update(float seconds) override;
 	private:
 		void postUiCommand(Command command);
 		void postUiEvent(UiEvent uiEvent);

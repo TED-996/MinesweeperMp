@@ -2,8 +2,8 @@
 
 namespace mMp {
 	GameSettings::GameSettings(int boardSize, int mineCount, bool isMp, bool isLocal, bool isRemote,
-		vector<string> names)
+		vector<string> name, vector<shared_ptr<TcpSocket> > sockets)
 		: boardSize(boardSize), mineCount(mineCount), isMp(isMp), isLocal(isLocal), isRemote(isRemote),
-		names(names){
+		names(names), sockets(sockets) {
 	}
 }

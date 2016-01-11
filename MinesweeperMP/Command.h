@@ -29,6 +29,7 @@ namespace mMp {
 
 		enum class CommandType
 		{
+			Invalid,
 			TileOpen,
 			TileFlag,
 			TurnEnd
@@ -46,5 +47,9 @@ namespace mMp {
 		explicit Command(TileOpenCommand command);
 		explicit Command(TileFlagCommand command);
 		explicit Command(TurnEndCommand command);
+
+		static Command getInvalidCommand();
+	private:
+		Command();
 	};
 }

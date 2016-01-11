@@ -1,8 +1,8 @@
-﻿#include "LocalMpGameManager.h"
+﻿#include "MpGameManager.h"
 
 namespace mMp
 {
-	LocalMpGameManager::LocalMpGameManager(GameSettings gameSettings, Action1P<UiEvent> postUiEventAction)
+	MpGameManager::MpGameManager(GameSettings gameSettings, Action1P<UiEvent> postUiEventAction)
 		: postUiEventAction(postUiEventAction), board(gameSettings.boardSize, gameSettings.mineCount),
 		gameSettings(gameSettings) {
 		currentPlayer = 0;
@@ -11,7 +11,7 @@ namespace mMp
 		scores.resize(gameSettings.names.size(), 0);
 	}
 
-	void LocalMpGameManager::postCommand(Command command) {
+	void MpGameManager::postCommand(Command command) {
 		if (command.commandType == Command::CommandType::TurnEnd) {
 			handleTurnEnd(command.turnEndCommand.player);
 		}
@@ -25,7 +25,7 @@ namespace mMp
 		}
 	}
 
-	void LocalMpGameManager::handleTurnEnd(int player) {
+	void MpGameManager::handleTurnEnd(int player) {
 		if (player != currentPlayer) {
 			return;
 		}
@@ -37,7 +37,7 @@ namespace mMp
 		postUiEventAction(UiEvent(UiEvent::TurnStartEvent(currentPlayer)));
 	}
 
-	void LocalMpGameManager::handleReveal(Board::BoardPoint rootPoint, int player) {
+	void MpGameManager::handleReveal(Board::BoardPoint rootPoint, int player) {
 		if (player != currentPlayer) {
 			return;
 		}
@@ -45,10 +45,10 @@ namespace mMp
 		if (board.isFlagged(rootPoint)) {
 			return;
 		}
-		if (board.isRevealed(rootPoint)) {
+		if (revealsThisTurn >= 3) {
 			return;
 		}
-		if (revealsThisTurn >= 3) {
+		if (board.isRevealed(rootPoint) && !handleRevealAround(rootPoint)) {
 			return;
 		}
 		if (board.isMine(rootPoint)) {
@@ -61,7 +61,7 @@ namespace mMp
 		revealPoint(rootPoint);
 	}
 
-	void LocalMpGameManager::revealPoint(Board::BoardPoint rootPoint) {
+	void MpGameManager::revealPoint(Board::BoardPoint rootPoint) {
 		vector<Board::BoardPoint> revealedPoints = board.reveal(rootPoint);
 		for (auto point : revealedPoints) {
 			if (board.isFlagged(point)) {
@@ -74,9 +74,38 @@ namespace mMp
 		
 	}
 
-	int LocalMpGameManager::getWinner() {
+	bool MpGameManager::handleRevealAround(Board::BoardPoint rootPoint) {
+		int flagsAround = 0;
+		int minesAround = 0;
+		bool found = false;
+
+		for (int i = 0; i < 8; i++) {
+			auto neighbor = rootPoint.getNeighbor((Direction)i);
+			if (board.isFlagged(neighbor)) {
+				flagsAround++;
+			}
+			if (board.isMine(neighbor)) {
+				minesAround++;
+			}
+		}
+		if (flagsAround != minesAround) {
+			return false;
+		}
+
+		for (int i = 0; i < 8; i++) {
+			auto neighbor = rootPoint.getNeighbor((Direction)i);
+			if (board.isValid(neighbor) && !board.isRevealed(neighbor) && !board.isFlagged(neighbor)) {
+				revealPoint(neighbor);
+				found = true;
+			}
+		}
+
+		return found;
+	}
+
+	int MpGameManager::getWinner() {
 		int maxPos = 0;
-		for (int i = 1; i < scores.size(); i++) {
+		for (int i = 1; i < (int) scores.size(); i++) {
 			if (scores[i] > scores[maxPos]) {
 				maxPos = i;
 			}
@@ -84,7 +113,7 @@ namespace mMp
 		return maxPos;
 	}
 
-	void LocalMpGameManager::handleFlag(Board::BoardPoint point, int player) {
+	void MpGameManager::handleFlag(Board::BoardPoint point, int player) {
 		if (player != currentPlayer) {
 			return;
 		}
@@ -109,7 +138,7 @@ namespace mMp
 		}
 	}
 
-	void LocalMpGameManager::KillCurrentPlayer() {
+	void MpGameManager::KillCurrentPlayer() {
 		playerDead[currentPlayer] = true;
 		postUiEventAction(UiEvent(UiEvent::PlayerDeadEvent(currentPlayer)));
 		handleTurnEnd(currentPlayer);

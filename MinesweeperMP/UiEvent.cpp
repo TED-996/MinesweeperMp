@@ -63,4 +63,12 @@ namespace mMp
 		revealAcceptedEvent = event;
 		eventType = UiEventType::RevealAccepted;
 	}
+
+	UiEvent UiEvent::getInvalidEvent() {
+		return UiEvent();
+	}
+
+	UiEvent::UiEvent() {
+		eventType = UiEventType::Invalid;
+	}
 }

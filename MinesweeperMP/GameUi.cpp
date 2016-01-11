@@ -116,14 +116,23 @@ namespace mMp {
 	}
 
 	void GameUi::onButtonReveal(int line, int column) {
+		if (gameSettings.isMp && !gameSettings.isLocal && currentPlayer != 0) {
+			return;
+		}
 		postCommandAction(Command(Command::TileOpenCommand(line, column, currentPlayer)));
 	}
 
 	void GameUi::onButtonFlag(int line, int column) {
+		if (gameSettings.isMp && !gameSettings.isLocal && currentPlayer != 0) {
+			return;
+		}
 		postCommandAction(Command(Command::TileFlagCommand(line, column, currentPlayer)));
 	}
 
 	void GameUi::onTurnEnd() {
+		if (gameSettings.isMp && !gameSettings.isLocal && currentPlayer != 0) {
+			return;
+		}
 		postCommandAction(Command(Command::TurnEndCommand(currentPlayer)));
 	}
 

@@ -54,6 +54,7 @@ namespace mMp {
 
 		enum class UiEventType
 		{
+			Invalid,
 			TileReveal,
 			TileFlag,
 			MineExplode,
@@ -83,5 +84,9 @@ namespace mMp {
 		explicit UiEvent(PlayerDeadEvent event);
 		explicit UiEvent(TurnStartEvent event);
 		explicit UiEvent(RevealAcceptedEvent event);
+
+		static UiEvent getInvalidEvent();
+	private:
+		UiEvent();
 	};
 }
