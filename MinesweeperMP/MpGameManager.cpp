@@ -34,11 +34,13 @@ namespace mMp
 		} while (playerDead[currentPlayer] && currentPlayer != player);
 		revealsThisTurn = 0;
 
-		postUiEventAction(UiEvent(UiEvent::TurnStartEvent(currentPlayer)));
+		if (!playerDead[currentPlayer]) {
+			postUiEventAction(UiEvent(UiEvent::TurnStartEvent(currentPlayer)));
+		}
 	}
 
 	void MpGameManager::handleReveal(Board::BoardPoint rootPoint, int player) {
-		if (player != currentPlayer) {
+		if (player != currentPlayer || playerDead[player]) {
 			return;
 		}
 
@@ -114,7 +116,7 @@ namespace mMp
 	}
 
 	void MpGameManager::handleFlag(Board::BoardPoint point, int player) {
-		if (player != currentPlayer) {
+		if (player != currentPlayer || playerDead[player]) {
 			return;
 		}
 
