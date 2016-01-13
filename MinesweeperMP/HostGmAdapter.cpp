@@ -24,7 +24,7 @@ namespace mMp
 	}
 
 	void HostGmAdapter::update(float seconds) {
-		for (int i = 0; i < sockets.size(); i++) {
+		for (int i = 0; i < (int) sockets.size(); i++) {
 			if (selector.isReady(*sockets[i])) {
 				receiveCommand(*sockets[i], i);
 			}
@@ -42,7 +42,7 @@ namespace mMp
 
 	void HostGmAdapter::sendUiEvent(UiEvent event) {
 		Packet packet = packUiEvent(event);
-		for (int i = 0; i < sockets.size(); i++) {
+		for (int i = 0; i < (int) sockets.size(); i++) {
 			if (sockets[i] != nullptr && sockets[i]->send(packet) != Socket::Done) {
 				sockets[i]->disconnect();
 				sockets[i] = nullptr;
@@ -91,25 +91,23 @@ namespace mMp
 			result << (Int32)event.tileRevealEvent.line << (Int32)event.tileRevealEvent.column
 				<< (Int32)event.tileRevealEvent.neighbors;
 		}
-		else if (event.eventType == UiEvent::UiEventType::TileFlag) {
+		if (event.eventType == UiEvent::UiEventType::TileFlag) {
 			result << (Int32)event.tileFlagEvent.line << (Int32)event.tileFlagEvent.column
 				<< (Uint8)event.tileFlagEvent.flagged << (Int32)event.tileFlagEvent.player;
 		}
-		else if (event.eventType == UiEvent::UiEventType::RevealAccepted) {
+		if (event.eventType == UiEvent::UiEventType::RevealAccepted) {
 		}
-		else if (event.eventType == UiEvent::UiEventType::GameOver) {
+		if (event.eventType == UiEvent::UiEventType::GameOver) {
 			result << (Int8)event.gameOverEvent.won << (Int32)event.gameOverEvent.player;
 		}
-		else if (event.eventType == UiEvent::UiEventType::MineExplode) {
+		if (event.eventType == UiEvent::UiEventType::MineExplode) {
 			result << (Int32)event.mineExplodeEvent.line << (Int32)event.mineExplodeEvent.column;
 		}
-		else if (event.eventType == UiEvent::UiEventType::PlayerDead) {
+		if (event.eventType == UiEvent::UiEventType::PlayerDead) {
 			result << (Int32)event.playerDeadEvent.player;
 		}
-		else if (event.eventType == UiEvent::UiEventType::TurnStart) {
+		if (event.eventType == UiEvent::UiEventType::TurnStart) {
 			result << (Int32)event.turnStartEvent.player;
-		}
-		else {
 		}
 		
 		return result;

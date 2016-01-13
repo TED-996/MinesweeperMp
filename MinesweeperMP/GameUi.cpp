@@ -5,7 +5,7 @@ namespace mMp {
 	GameUi::GameUi(GameSettings gameSettings, Action1P<Command> postCommandAction, Action closeAction,
 		Desktop& desktop)
 		: UiComponent(desktop), gameSettings(gameSettings), scoreboard(gameSettings.names),
-		closeAction(closeAction), postCommandAction(postCommandAction), selectedPoint(0, 0) {
+		selectedPoint(0, 0), closeAction(closeAction), postCommandAction(postCommandAction) {
 		flaggedTiles = 0;
 		playerDead.resize(gameSettings.names.size());
 		currentPlayer = 0;
@@ -21,7 +21,7 @@ namespace mMp {
 
 	void GameUi::initWindow() {
 		window->SetStyle(Style::Fullscreen);
-		window->SetRequisition(Vector2f(ct::WindowWidth, ct::WindowHeight));
+		window->SetRequisition(Vector2f((float)ct::WindowWidth, (float)ct::WindowHeight));
 
 		auto mainBox = Box::Create(Box::Orientation::VERTICAL);
 
@@ -39,7 +39,7 @@ namespace mMp {
 
 		auto gameBox = Box::Create(Box::Orientation::HORIZONTAL, 5);
 		auto table = Table::Create();
-		int buttonSize = (int) (ct::WindowHeight * 0.8 / gameSettings.boardSize);
+		int buttonSize = (int) (ct::WindowHeight * 0.7 / gameSettings.boardSize);
 		for (int l = 0; l < gameSettings.boardSize; l++) {
 			for (int c = 0; c < gameSettings.boardSize; c++) {
 				auto tileButton = getNewButton(l, c, buttonSize);
@@ -91,7 +91,7 @@ namespace mMp {
 		mainBox->Pack(gameBox, true, true);
 		mainBox->Pack(bottomBox, true, true);
 
-		window->Add(createAlignment(mainBox, Vector2f(0.5f, 0.5f)));
+		window->Add(createAlignment(mainBox, Vector2f(0.5f, 0.5f), Vector2f(0.0f, 0.0f)));
 
 		selectTile(selectedPoint);
 	}

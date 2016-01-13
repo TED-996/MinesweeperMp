@@ -20,7 +20,7 @@ namespace mMp {
 		bool handleEvent(Event event) override;
 		void update(float seconds) override;
 	private:
-		Packet packCommand(Command command);
+		static Packet packCommand(Command command);
 		UiEvent unpackEvent(Packet packet);
 	};
 }
