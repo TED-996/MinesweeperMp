@@ -5,21 +5,26 @@
 namespace mMp
 {
 	MainMenu::MainMenu(Desktop& sfgDesktop, Action closeAction)
-		: MenuNode(sfgDesktop, make_shared<MainMenuUi>(getPlaySpAction(), getPlayLocalMpAction(), closeAction,
-			sfgDesktop)) {
+		: MenuNode(sfgDesktop, make_shared<MainMenuUi>(getPlaySpAction(), getPlayLocalMpAction(),
+			getUpdateSettingsAction(), closeAction, sfgDesktop)), gameSettings(0, 0) {
 	}
 
-	GameSettings getSpGameSettings();
-	GameSettings getLocalMpGameSettings();
-
 	void MainMenu::playSp() {
-		setChild(make_shared<GameMenuNode>(getSpGameSettings(), getRemoveChildAction(), sfgDesktop));
+		gameSettings.isMp = false;
+		setChild(make_shared<GameMenuNode>(gameSettings, getRemoveChildAction(), sfgDesktop));
 	}
 
 	void MainMenu::playLocalMp() {
-		setChild(make_shared<GameMenuNode>(getLocalMpGameSettings(), getRemoveChildAction(), sfgDesktop));
+		gameSettings.isMp = false;
+		gameSettings.names = vector<string>({ "Player 1", "Player 2", "Player 3", "Player 4" });
+		setChild(make_shared<GameMenuNode>(gameSettings, getRemoveChildAction(), sfgDesktop));
 	}
 
+
+	void MainMenu::updateSettings(GameSettings newSettings) {
+		gameSettings.boardSize = newSettings.boardSize;
+		gameSettings.mineCount = newSettings.mineCount;
+	}
 
 	Action MainMenu::getPlaySpAction() {
 		return bind(&MainMenu::playSp, this);
@@ -29,11 +34,7 @@ namespace mMp
 		return bind(&MainMenu::playLocalMp, this);
 	}
 
-	GameSettings getSpGameSettings() {
-		return GameSettings(20, 100, false);
-	}
-
-	GameSettings getLocalMpGameSettings() {
-		return GameSettings(20, 100, true, vector<string>({ "Player 1", "Player 2", "Player 3", "Player 4" }));
+	Action1P<GameSettings> MainMenu::getUpdateSettingsAction() {
+		return bind(&MainMenu::updateSettings, this, placeholders::_1);
 	}
 }

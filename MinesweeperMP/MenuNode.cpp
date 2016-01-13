@@ -31,7 +31,6 @@ namespace mMp {
 	}
 
 	void MenuNode::unstashUi() {
-		uiComponent->reset();
 		uiComponent->enable();
 
 		childComponent = uiComponent;

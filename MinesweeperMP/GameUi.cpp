@@ -238,7 +238,6 @@ namespace mMp {
 	}
 
 	void GameUi::postUiEvent(UiEvent event) {
-		cout << "event got to the ui! type: " << (int) event.eventType << '\n';
 		if (event.eventType == UiEvent::UiEventType::TileReveal) {
 			auto tileRevealEvent = event.tileRevealEvent;
 			handleTileReveal(tileRevealEvent.line, tileRevealEvent.column, tileRevealEvent.neighbors);

@@ -3,7 +3,7 @@
 namespace mMp {
 	Application::Application() {
 		if (!desktop.LoadThemeFromFile("theme.sft")) {
-			cout << "theme not loaded!";
+			exit(1);
 		}
 	}
 
