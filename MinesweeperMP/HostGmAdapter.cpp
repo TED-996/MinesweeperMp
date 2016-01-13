@@ -1,4 +1,5 @@
 ﻿#include "HostGmAdapter.h"
+#include <iostream>
 
 namespace mMp
 {
@@ -6,7 +7,10 @@ namespace mMp
 		: gameManager(gameSettings, getPostUiEventAction()), gameSettings(gameSettings),
 		sockets(gameSettings.sockets), postUiEventAction(postUiEventAction) {
 		for (auto socket : sockets) {
-			selector.add(*socket);
+			if (socket != nullptr) {
+				selector.add(*socket);
+				socket->setBlocking(false);
+			}
 		}
 	}
 
@@ -17,7 +21,9 @@ namespace mMp
 	bool HostGmAdapter::handleEvent(Event event) {
 		if (event.type == Event::Closed) {
 			for (auto socket : sockets) {
-				socket->disconnect();
+				if (socket != nullptr) {
+					socket->disconnect();
+				}
 			}
 		}
 		return false;
@@ -25,7 +31,7 @@ namespace mMp
 
 	void HostGmAdapter::update(float seconds) {
 		for (int i = 0; i < (int) sockets.size(); i++) {
-			if (selector.isReady(*sockets[i])) {
+			if (sockets[i] != nullptr && selector.isReady(*sockets[i])) {
 				receiveCommand(*sockets[i], i);
 			}
 		}
@@ -41,12 +47,19 @@ namespace mMp
 	}
 
 	void HostGmAdapter::sendUiEvent(UiEvent event) {
-		Packet packet = packUiEvent(event);
 		for (int i = 0; i < (int) sockets.size(); i++) {
-			if (sockets[i] != nullptr && sockets[i]->send(packet) != Socket::Done) {
+			if (sockets[i] == nullptr) {
+				continue;
+			}
+			Packet packet = packUiEvent(fakePlayer(event, i));
+			if (sockets[i]->send(packet) != Socket::Done) {
 				sockets[i]->disconnect();
 				sockets[i] = nullptr;
 				disconnectPlayer(i);
+				cout << "packet not sent!\n";
+			}
+			else {
+				cout << "packet sent!\n";
 			}
 		}
 	}

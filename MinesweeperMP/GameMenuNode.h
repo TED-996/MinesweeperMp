@@ -15,7 +15,7 @@ namespace mMp {
 	private:
 		void postUiCommand(Command command);
 		void postUiEvent(UiEvent uiEvent);
-		Action1P<Command> getPostCommandFunction();
-		Action1P<UiEvent> getPostUiEventFunction();
+		Action1P<Command> getPostCommandAction();
+		Action1P<UiEvent> getPostUiEventAction();
 	};
 }

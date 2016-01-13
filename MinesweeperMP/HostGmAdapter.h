@@ -17,7 +17,7 @@ namespace mMp {
 		MpGameManager gameManager;
 		GameSettings gameSettings;
 		
-		vector<shared_ptr<TcpSocket>>& sockets;
+		vector<shared_ptr<TcpSocket>> sockets;
 		SocketSelector selector;
 
 		Action1P<UiEvent> postUiEventAction;

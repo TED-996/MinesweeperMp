@@ -41,6 +41,11 @@ namespace mMp {
 		IpAddress address = IpAddress::Broadcast;
 		unsigned short port = ct::UdpPort;
 		if (udpSocket.receive(packet, address, port) == Socket::Done) {
+			for (auto ip : ipAddresses) {
+				if (ip == address) {
+					return;
+				}
+			}
 			string name;
 			packet >> name;
 			ipAddresses.push_back(address);
@@ -60,7 +65,9 @@ namespace mMp {
 		if (tcpSocket->connect(ipAddress, ct::TcpPort) !=  Socket::Done) {
 			cout << "cannot connect\n";
 			backAction();
+			return;
 		}
+		connected = true;
 		gameSettings.sockets.push_back(tcpSocket);
 	}
 

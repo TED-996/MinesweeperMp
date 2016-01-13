@@ -8,7 +8,7 @@
 namespace mMp {
 	using namespace sf;
 	using namespace std;
-	class ClientGmAdapter : IGameManager
+	class ClientGmAdapter : public IGameManager
 	{
 		shared_ptr<TcpSocket> socket;
 
@@ -21,6 +21,6 @@ namespace mMp {
 		void update(float seconds) override;
 	private:
 		static Packet packCommand(Command command);
-		UiEvent unpackEvent(Packet packet);
+		static UiEvent unpackEvent(Packet packet);
 	};
 }

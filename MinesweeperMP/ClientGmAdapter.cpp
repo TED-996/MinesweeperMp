@@ -20,14 +20,16 @@ namespace mMp {
 
 	bool ClientGmAdapter::handleEvent(Event event) {
 		if (event.type == Event::Closed) {
-			socket->disconnect();
+			if (socket != nullptr) {
+				socket->disconnect();
+			}
 		}
 		return false;
 	}
 
 	void ClientGmAdapter::update(float seconds) {
 		Packet packet;
-		if (socket->receive(packet) == Socket::Done) {
+		if (socket != nullptr && socket->receive(packet) == Socket::Done) {
 			postUiEventAction(unpackEvent(packet));
 		}
 	}
