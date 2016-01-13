@@ -8,13 +8,10 @@ namespace mMp {
 	{
 		Action playSpAction;
 		Action playLocalMpAction;
-		Action hostMpAction;
-		Action joinMpAction;
 		Action exitAction;
 		
 	public:
-		MainMenuUi(Action playSpAction, Action playLocalMpAction, Action hostMpAction, Action joinMpAction,
-			Action exitAction, Desktop& desktop);
+		MainMenuUi(Action playSpAction, Action playLocalMpAction, Action exitAction, Desktop& desktop);
 
 	protected:
 		void initWindow() override;

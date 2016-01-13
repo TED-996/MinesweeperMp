@@ -13,12 +13,8 @@ namespace mMp {
 
 		void playSp();
 		void playLocalMp();
-		void hostMp();
-		void joinMp();
 
 		Action getPlaySpAction();
 		Action getPlayLocalMpAction();
-		Action getHostMpAction();
-		Action getJoinMpAction();
 	};
 }

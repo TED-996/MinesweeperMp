@@ -120,16 +120,10 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="ClientGmAdapter.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="GameSettings.cpp" />
-    <ClCompile Include="MpClientSetupNode.cpp" />
-    <ClCompile Include="MpClientSetupUi.cpp" />
-    <ClCompile Include="MpHostSetupNode.cpp" />
-    <ClCompile Include="HostGmAdapter.cpp" />
     <ClCompile Include="MpGameManager.cpp" />
-    <ClCompile Include="MpHostSetupUi.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="ScoreboardItem.cpp" />
     <ClCompile Include="SpGameManager.cpp" />
@@ -145,18 +139,12 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Board.h" />
-    <ClInclude Include="ClientGmAdapter.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentList.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="GameSettings.h" />
-    <ClInclude Include="MpClientSetupNode.h" />
-    <ClInclude Include="MpClientSetupUi.h" />
-    <ClInclude Include="MpHostSetupNode.h" />
-    <ClInclude Include="HostGmAdapter.h" />
     <ClInclude Include="MpGameManager.h" />
-    <ClInclude Include="MpHostSetupUi.h" />
     <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="ScoreboardItem.h" />
     <ClInclude Include="SpGameManager.h" />

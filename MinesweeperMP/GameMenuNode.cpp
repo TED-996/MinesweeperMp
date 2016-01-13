@@ -2,25 +2,13 @@
 #include "GameUi.h"
 #include "SpGameManager.h"
 #include "MpGameManager.h"
-#include "ClientGmAdapter.h"
-#include "HostGmAdapter.h"
 
 namespace mMp {
 	GameMenuNode::GameMenuNode(GameSettings gameSettings, Action closeAction, Desktop& desktop)
 		: MenuNode(desktop,
 			make_shared<GameUi>(gameSettings, getPostCommandAction(), closeAction, desktop)){
 		if (gameSettings.isMp) {
-			if (gameSettings.isLocal) {
-				gameManager = make_shared<MpGameManager>(gameSettings, getPostUiEventAction());
-			}
-			else {
-				if (gameSettings.isRemote) {
-					gameManager = make_shared<ClientGmAdapter>(gameSettings, getPostUiEventAction());
-				}
-				else {
-					gameManager = make_shared<HostGmAdapter>(gameSettings, getPostUiEventAction());
-				}
-			}
+			gameManager = make_shared<MpGameManager>(gameSettings, getPostUiEventAction());
 		}
 		else {
 			gameManager = make_shared<SpGameManager>(gameSettings, getPostUiEventAction());

@@ -37,12 +37,6 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{9d44c939-7f57-4e4e-b4bb-0f3c4472a955}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Network">
-      <UniqueIdentifier>{377f27b1-0346-46a8-b717-fdd18fb89775}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Network">
-      <UniqueIdentifier>{9652636a-add2-468b-bca7-148749a48074}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components\Ui">
       <UniqueIdentifier>{fdbb099e-618e-4a84-a1f5-4399769ac622}</UniqueIdentifier>
     </Filter>
@@ -93,15 +87,6 @@
     <ClCompile Include="MpGameManager.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="HostGmAdapter.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientGmAdapter.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="MpHostSetupNode.cpp">
-      <Filter>Source Files\MenuNodes</Filter>
-    </ClCompile>
     <ClCompile Include="GameUi.cpp">
       <Filter>Source Files\Components\Ui</Filter>
     </ClCompile>
@@ -110,15 +95,6 @@
     </ClCompile>
     <ClCompile Include="UiComponent.cpp">
       <Filter>Source Files\Components\Ui</Filter>
-    </ClCompile>
-    <ClCompile Include="MpHostSetupUi.cpp">
-      <Filter>Source Files\Components\Ui</Filter>
-    </ClCompile>
-    <ClCompile Include="MpClientSetupUi.cpp">
-      <Filter>Source Files\Components\Ui</Filter>
-    </ClCompile>
-    <ClCompile Include="MpClientSetupNode.cpp">
-      <Filter>Source Files\MenuNodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,15 +146,6 @@
     <ClInclude Include="MpGameManager.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="HostGmAdapter.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientGmAdapter.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="MpHostSetupNode.h">
-      <Filter>Header Files\MenuNodes</Filter>
-    </ClInclude>
     <ClInclude Include="GameUi.h">
       <Filter>Header Files\Components\Ui</Filter>
     </ClInclude>
@@ -186,15 +153,6 @@
       <Filter>Header Files\Components\Ui</Filter>
     </ClInclude>
     <ClInclude Include="UiComponent.h">
-      <Filter>Header Files\Components\Ui</Filter>
-    </ClInclude>
-    <ClInclude Include="MpHostSetupUi.h">
-      <Filter>Header Files\Components\Ui</Filter>
-    </ClInclude>
-    <ClInclude Include="MpClientSetupNode.h">
-      <Filter>Header Files\MenuNodes</Filter>
-    </ClInclude>
-    <ClInclude Include="MpClientSetupUi.h">
       <Filter>Header Files\Components\Ui</Filter>
     </ClInclude>
   </ItemGroup>
