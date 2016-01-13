@@ -12,6 +12,7 @@ namespace mMp
 		customUiComponent = dynamic_pointer_cast<MpHostSetupUi>(uiComponent);
 		
 		listener.setBlocking(false);
+		listener.listen(ct::TcpPort);
 	}
 
 	Action1P<string> MpHostSetupNode::getCreateServerAction() {
@@ -60,22 +61,22 @@ namespace mMp
 		if (event.type == Event::Closed) {
 			closeSockets();
 		}
-		return false;
+		return MenuNode::handleEvent(event);
 	}
 
 	void MpHostSetupNode::update(float seconds) {
+		MenuNode::update(seconds);
 		if (!serverWaiting) {
 			return;
 		}
 
-		if (listener.listen(ct::TcpPort) == Socket::Done) {
-			shared_ptr<TcpSocket> socket = make_shared<TcpSocket>();
-			listener.accept(*socket);
+		shared_ptr<TcpSocket> socket = make_shared<TcpSocket>();
+		if (listener.accept(*socket) == Socket::Done) {
 			gameSettings.sockets.push_back(socket);
 			//TODO: get name...
 			string name = "Player " + to_string(gameSettings.sockets.size() + 1);
 			gameSettings.names.push_back(name);
-			customUiComponent->addName(name); 
+			customUiComponent->addName(name);
 		}
 		if (broadcastTimer.getElapsedTime() > sf::seconds(5)) {
 			broadcastHost();

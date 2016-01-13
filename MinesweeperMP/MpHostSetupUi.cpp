@@ -6,6 +6,7 @@ namespace mMp
 		Action startGameAction)
 		: UiComponent(desktop), backAction(backAction), createServerAction(createServerAction),
 		startGameAction(startGameAction) {
+		doCreateServer = false;
 	}
 
 	extern Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment,
@@ -13,34 +14,55 @@ namespace mMp
 
 	void MpHostSetupUi::initWindow() {
 		window->SetStyle(Style::Fullscreen);
-		window->GetSignal(sfg::Window::OnCloseButton).Connect(backAction);
+		window->SetRequisition(Vector2f((float)ct::WindowWidth, (float)ct::WindowHeight));
 
 		mainBox = Box::Create(Box::Orientation::VERTICAL, 5);
+		auto closeButton = Button::Create("Close");
+		closeButton->GetSignal(Widget::OnLeftClick).Connect(backAction);
+		mainBox->Pack(createAlignment(closeButton, Vector2f(0.0f, 0.0f), Vector2f(1.0f, 0.0f)));
 
 		auto nameBox = Box::Create(Box::Orientation::HORIZONTAL, 5);
 		nameEntry = Entry::Create("Player 1");
 		nameEntry->SetMaximumLength(10);
+		nameEntry->SetRequisition(Vector2f(ct::WindowWidth * 0.1f, 0.0f));
 		auto createButton = Button::Create("Create");
-		createButton->GetSignal(Widget::OnLeftClick).Connect(bind(&MpHostSetupUi::onCreateServer, this));
+		createButton->GetSignal(Widget::OnLeftClick).Connect(bind(&MpHostSetupUi::triggerCreateServer, this));
 		
 		nameBox->Pack(nameEntry, true, true);
-		nameBox->Pack(createButton, false, false);
+		nameBox->Pack(createButton, true, true);
 
-		auto nameFrame = Frame::Create("Your name:");
+		nameFrame = Frame::Create("Your name:");
 		nameFrame->Add(nameBox);
-		nameFrame->SetRequisition(Vector2f(0.0f, ct::WindowHeight * 0.3f));
+		nameFrame->SetRequisition(Vector2f(0.0f, ct::WindowHeight * 0.1f));
 		mainBox->Pack(createAlignment(nameFrame, Vector2f(0.5f, 0.01f), Vector2f(1.0f, 0.0f)));
+
+		window->Add(createAlignment(mainBox, Vector2f(0.5f, 0.5f), Vector2f(0.9f, 0.9f)));
 	}
 
-	void MpHostSetupUi::onCreateServer() {
+	void MpHostSetupUi::update(float seconds) {
+		if (doCreateServer) {
+			createServer();
+			doCreateServer = false;
+		}
+	}
+
+	void MpHostSetupUi::triggerCreateServer() {
+		doCreateServer = true;
+	}
+
+	void MpHostSetupUi::createServer() {
 		string name = nameEntry->GetText();
 		if (name.empty()) {
 			return;
 		}
-		//Update UI
+		nameEntry = nullptr;
 
 		nameFrame->RemoveAll();
-		nameFrame->Add(Label::Create(name));
+		auto nameLabel = Label::Create(name);
+		nameLabel->SetRequisition(Vector2f(0.0f, ct::WindowHeight * 0.05f));
+		nameLabel->SetAlignment(Vector2f(0.5f, 0.5f));
+		nameFrame->Add(createAlignment(nameLabel, Vector2f(0.5f, 0.5f), Vector2f(0.0f, 0.0f)));
+
 
 		mainBox->Pack(Label::Create("Waiting for players..."), false, false);
 		playerBox = Box::Create(Box::Orientation::VERTICAL, 5);
@@ -62,6 +84,6 @@ namespace mMp
 	void MpHostSetupUi::addName(string name) {
 		auto frame = Frame::Create();
 		frame->Add(Label::Create(name));
-		playerBox->Add(frame);
+		playerBox->Pack(frame);
 	}
 }

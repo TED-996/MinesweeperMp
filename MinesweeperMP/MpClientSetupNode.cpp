@@ -23,7 +23,7 @@ namespace mMp {
 				tcpSocket->disconnect();
 			}
 		}
-		return false;
+		return MenuNode::handleEvent(event);
 	}
 
 	void MpClientSetupNode::update(float seconds) {
@@ -33,6 +33,7 @@ namespace mMp {
 		else{
 			receiveTcpSettings();
 		}
+		MenuNode::update(seconds);
 	}
 
 	void MpClientSetupNode::receiveUdpBroadcast() {

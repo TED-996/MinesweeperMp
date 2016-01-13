@@ -13,9 +13,13 @@ namespace mMp {
 		Vector2f scale = Vector2f(1.0f, 1.0f));
 
 	void MpClientSetupUi::initWindow() {
-		window->SetStyle(Style::Fullscreen | Style::Close);
-		window->GetSignal(sfg::Window::OnCloseButton).Connect(backAction);
+		window->SetStyle(Style::Fullscreen);
+		window->SetRequisition(Vector2f((float)ct::WindowWidth, (float)ct::WindowHeight));
+
 		mainBox = Box::Create(Box::Orientation::VERTICAL, 5);
+		auto closeButton = Button::Create("Close");
+		closeButton->GetSignal(Widget::OnLeftClick).Connect(backAction);
+		mainBox->Pack(createAlignment(closeButton, Vector2f(0.0f, 0.0f), Vector2f(1.0f, 0.0f)));
 
 		nameEntry = Entry::Create("Player 1");
 		nameEntry->SetMaximumLength(10);
@@ -31,6 +35,7 @@ namespace mMp {
 		serverFrame->SetRequisition(Vector2f(0.0f, ct::WindowHeight * 0.5f));
 
 		mainBox->Pack(serverFrame, true, true);
+		window->Add(createAlignment(mainBox, Vector2f(0.5f, 0.5f), Vector2f(0.9f, 0.9f)));
 	}
 
 	void MpClientSetupUi::addServer(string name) {
