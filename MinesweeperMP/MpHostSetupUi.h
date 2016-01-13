@@ -8,6 +8,7 @@ namespace mMp {
 
 	class MpHostSetupUi : public UiComponent
 	{
+		Action backAction;
 		Action1P<string> createServerAction;
 		Action startGameAction;
 
@@ -17,7 +18,8 @@ namespace mMp {
 		Box::Ptr playerBox;
 
 	public:
-		MpHostSetupUi(Desktop& desktop, Action1P<string> createServerAction, Action startGameAction);
+		MpHostSetupUi(Desktop& desktop, Action backAction, Action1P<string> createServerAction,
+			Action startGameAction);
 
 		void addName(string name);
 	protected:

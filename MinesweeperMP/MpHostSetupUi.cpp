@@ -2,8 +2,10 @@
 
 namespace mMp
 {
-	MpHostSetupUi::MpHostSetupUi(Desktop& desktop, Action1P<string> createServerAction, Action startGameAction)
-		: UiComponent(desktop), createServerAction(createServerAction), startGameAction(startGameAction) {
+	MpHostSetupUi::MpHostSetupUi(Desktop& desktop, Action backAction, Action1P<string> createServerAction,
+		Action startGameAction)
+		: UiComponent(desktop), backAction(backAction), createServerAction(createServerAction),
+		startGameAction(startGameAction) {
 	}
 
 	extern Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment,
@@ -11,6 +13,8 @@ namespace mMp
 
 	void MpHostSetupUi::initWindow() {
 		window->SetStyle(Style::Fullscreen);
+		window->GetSignal(sfg::Window::OnCloseButton).Connect(backAction);
+
 		mainBox = Box::Create(Box::Orientation::VERTICAL, 5);
 
 		auto nameBox = Box::Create(Box::Orientation::HORIZONTAL, 5);

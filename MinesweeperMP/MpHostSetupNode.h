@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "memory"
+#include <memory>
+#include <SFML/Network.hpp>
 #include "MenuNode.h"
 #include "GameSettings.h"
 #include "MpHostSetupUi.h"
@@ -10,16 +11,27 @@ namespace mMp {
 		Action closeAction;
 
 		GameSettings gameSettings;
+		bool serverWaiting;
+
+		Clock broadcastTimer;
+		TcpListener listener;
 
 		shared_ptr<MpHostSetupUi> customUiComponent;
 	public:
-		explicit MpHostSetupNode(Desktop& sfgDesktop, Action closeAction, GameSettings gameSettings);
+		MpHostSetupNode(GameSettings gameSettings, Action closeAction, Desktop& sfgDesktop);
 
+		bool handleEvent(Event event) override;
+		void update(float seconds) override;
 	private:
+		void broadcastHost();
+
 		Action1P<string> getCreateServerAction();
 		Action getStartGameAction();
 
 		void createServer(string playerName);
 		void startGame();
+		void sendGameSettings();
+
+		void closeSockets();
 	};
 }

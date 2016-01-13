@@ -6,11 +6,15 @@ namespace mMp {
 	using namespace std;
 	class MainMenuUi : public UiComponent
 	{
-		Action playAction;
+		Action playSpAction;
+		Action playLocalMpAction;
+		Action hostMpAction;
+		Action joinMpAction;
 		Action exitAction;
 		
 	public:
-		explicit MainMenuUi(Action playAction, Action exitAction, Desktop& desktop);
+		MainMenuUi(Action playSpAction, Action playLocalMpAction, Action hostMpAction, Action joinMpAction,
+			Action exitAction, Desktop& desktop);
 
 	protected:
 		void initWindow() override;

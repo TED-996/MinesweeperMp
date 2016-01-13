@@ -10,7 +10,8 @@ namespace mMp {
 	namespace ct {
 		const int WindowWidth = 800;
 		const int WindowHeight = 600;
-		const int NetworkPort = 57415;
+		const int TcpPort = 57415;
+		const int UdpPort = TcpPort + 1;
 	}
 
 	enum class Direction

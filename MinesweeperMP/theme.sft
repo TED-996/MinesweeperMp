@@ -1,3 +1,7 @@
+Label.MMpLabel {
+	FontSize: 24;
+}
+
 Button.Tile {
 	BackgroundColor: #555752FF;
 	BorderColor: #555752FF;
