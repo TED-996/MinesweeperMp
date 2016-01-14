@@ -58,7 +58,7 @@ namespace mMp {
 	}
 
 	void Board::generate() {
-		bool probExists[maxSize * maxSize] = {};
+		bool probExists[maxSize * maxSize + 1] = {};
 		int mineProb[maxSize][maxSize];
 
 		const int cornerPadding = 3;
@@ -74,7 +74,7 @@ namespace mMp {
 			for (int c = currentPadding; c < size - currentPadding; c++) {
 				int probability;
 				do {
-					probability = rand() % (size * size);
+					probability = rand() % (size * size) + 1;
 				} while (probExists[probability]);
 
 				probExists[probability] = true;
@@ -84,7 +84,7 @@ namespace mMp {
 		//Find the top [mineCount] probability factors. Those will be the mines.
 		int probCounter = 0;
 		int maxSafe;
-		for (maxSafe = size * size - 1; maxSafe >= 0 && probCounter < mineCount; maxSafe--) {
+		for (maxSafe = size * size; maxSafe > 0 && probCounter < mineCount; maxSafe--) {
 			if (probExists[maxSafe]) {
 				probCounter++;
 			}
