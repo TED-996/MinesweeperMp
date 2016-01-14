@@ -1,0 +1,52 @@
+Label.MMpLabel {
+	FontSize: 24;
+}
+
+Button.Tile {
+	BackgroundColor: #555752FF;
+	BorderColor: #555752FF;
+	Color: #C6CBC4FF;
+}
+
+Button.TileFlagged {
+	BackgroundColor: #FF2619FF;
+	BorderColor: #555752FF;
+	Color: #C6CBC4FF;
+}
+
+Button.TileRevealed {
+	BackgroundColor: #AAAAAAFF;
+	Color: #333333FF;
+	BorderColor: #555752FF;
+}
+
+Button.SelectedTile {
+	BackgroundColor: #555752FF;
+	BorderColor: #ACB209FF;
+	Color: #C6CBC4FF;
+}
+
+Button.SelectedTileFlagged {
+	BackgroundColor: #FF2619FF;
+	BorderColor: #ACB209FF;
+	Color: #C6CBC4FF;
+}
+
+Button.SelectedTileRevealed {
+	BackgroundColor: #AAAAAAFF;
+	Color: #333333FF;
+	BorderColor: #ACB209FF;
+}
+
+
+Frame.PlayerInactive {
+	BorderColor: #757772FF;
+}
+
+Frame.PlayerActive {
+	BorderColor: #0083FFFF;
+}
+
+Frame.PlayerDead {
+	BorderColor: #FF2619FF;
+}

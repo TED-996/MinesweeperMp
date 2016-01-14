@@ -18,11 +18,13 @@ namespace mMp {
 		Scale::Ptr mineCountScale;
 
 		GameSettings gameSettings;
+
+		bool hasChanged;
 		
 	public:
 		MainMenuUi(Action playSpAction, Action playLocalMpAction, Action1P<GameSettings> updateSettingsAction,
 			Action exitAction, Desktop& desktop);
-
+		void update(float seconds) override;
 	protected:
 		void initWindow() override;
 	private:

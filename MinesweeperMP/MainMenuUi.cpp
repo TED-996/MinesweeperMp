@@ -6,6 +6,14 @@ namespace mMp
 		Action1P<GameSettings> updateSettingsAction, Action exitAction, Desktop& desktop)
 		: UiComponent(desktop), playSpAction(playSpAction), playLocalMpAction(playLocalMpAction),
 		updateSettingsAction(updateSettingsAction), exitAction(exitAction), gameSettings(0, 0) {
+		hasChanged = false;
+	}
+
+	void MainMenuUi::update(float seconds) {
+		if (hasChanged) {
+			updateSettingsAction(gameSettings);
+			hasChanged = false;
+		}
 	}
 
 	extern Alignment::Ptr createAlignment(Widget::Ptr widget, Vector2f alignment,
@@ -99,6 +107,6 @@ namespace mMp
 
 		gameSettings.mineCount = mineCount;
 
-		updateSettingsAction(gameSettings);
+		hasChanged = true;
 	}
 }

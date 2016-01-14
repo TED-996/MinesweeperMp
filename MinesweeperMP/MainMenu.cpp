@@ -15,7 +15,7 @@ namespace mMp
 	}
 
 	void MainMenu::playLocalMp() {
-		gameSettings.isMp = false;
+		gameSettings.isMp = true;
 		gameSettings.names = vector<string>({ "Player 1", "Player 2", "Player 3", "Player 4" });
 		setChild(make_shared<GameMenuNode>(gameSettings, getRemoveChildAction(), sfgDesktop));
 	}
